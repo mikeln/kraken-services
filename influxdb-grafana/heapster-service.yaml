@@ -1,0 +1,17 @@
+apiVersion: v1beta3
+kind: Service
+metadata:
+  name: monitoring-heapster
+  namespace: default
+  labels:
+    k8s-app: monitoring-heapster
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "Heapster"
+spec:
+  ports:
+    - port: 8082
+      targetPort: 8082
+  selector:
+    k8s-app: heapster
+  publicIPs:
+    - "$HEAPSTER_PUBLIC_IP"

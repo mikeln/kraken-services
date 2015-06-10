@@ -1,0 +1,21 @@
+apiVersion: v1beta3
+kind: Service
+metadata:
+  name: monitoring-influxdb
+  namespace: default
+  labels:
+    k8s-app: influxGrafana
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "influxGrafana"
+spec:
+  ports:
+    - name: http
+      port: 8083
+      targetPort: 8083
+    - name: api
+      port: 8086
+      targetPort: 8086
+  selector:
+    k8s-app: influxGrafana
+  publicIPs:
+    - "$INFLUXDB_PUBLIC_IP"
