@@ -1,0 +1,16 @@
+apiVersion: v1beta3
+kind: Service
+metadata:
+  name: monitoring-grafana
+  namespace: default
+  labels:
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "Grafana"
+spec:
+  ports:
+    - port: 8002
+      targetPort: 8080
+  selector:
+    k8s-app: influxGrafana
+  publicIPs:
+    - "$GRAFANA_PUBLIC_IP"
