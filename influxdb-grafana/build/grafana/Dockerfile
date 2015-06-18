@@ -9,7 +9,7 @@ ENV KUISP_VERSION 0.3
 ENV GRAFANA_VERSION 1.9.1
 ENV INFLUXDB_NAME k8s
 ENV GRAFANA_DB_NAME grafana
-ENV GRAFANA_DEFAULT_DASHBOARD /dashboard/file/kubernetes.json
+ENV GRAFANA_DEFAULT_DASHBOARD /dashboard/file/kraken.json
 ENV INFLUXDB_PROTO http
 ENV INFLUXDB_HOST influxdb
 ENV INFLUXDB_PORT 8086
@@ -28,9 +28,9 @@ RUN apk-install ca-certificates curl tar && \
     apk del curl tar
 
 COPY config.js.tmpl /opt/grafana/config.js.tmpl
-COPY kubernetes-dashboard.json /opt/grafana/app/dashboards/kubernetes.json
+COPY dashboards/* /opt/grafana/app/dashboards/
 RUN chmod a+r /opt/grafana/config.js.tmpl && \
-    chmod a+r /opt/grafana/app/dashboards/kubernetes.json
+    chmod a+r /opt/grafana/app/dashboards/*.json
 
 WORKDIR /opt/grafana/
 USER nobody
