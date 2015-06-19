@@ -18,7 +18,7 @@ reporting-disabled = false
 [logging]
 # logging level can be one of "fine", "debug", "info", "warn" or "error"
 level  = "info"
-file   = "/opt/influxdb/shared/log.txt"         # stdout to log to standard out, or syslog facility
+file   = "stdout"         # stdout to log to standard out, or syslog facility
 
 # Configure the admin server
 [admin]
@@ -33,7 +33,7 @@ port     = 8086    # binding is disabled if the port isn't set
 # connections will timeout after this amount of time. Ensures that clients that misbehave
 # and keep alive connections they don't use won't end up connection a million times.
 # However, if a request is taking longer than this to complete, could be a problem.
-read-timeout = "5s"
+read-timeout = "1m"
 
 [input_plugins]
 
