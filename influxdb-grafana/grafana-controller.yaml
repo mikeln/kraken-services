@@ -1,38 +1,31 @@
 apiVersion: v1beta3
 kind: ReplicationController
 metadata:
-  name: monitoring-influx-grafana-v1
+  name: grafana-v1
   namespace: default
   labels:
-    k8s-app: influxGrafana
+    k8s-app: Grafana
     version: v1
     kubernetes.io/cluster-service: "true"
 spec:
   replicas: 1
   selector:
-    k8s-app: influxGrafana
+    k8s-app: Grafana
     version: v1
   template:
     metadata:
       labels:
-        k8s-app: influxGrafana
+        k8s-app: Grafana
         version: v1
         kubernetes.io/cluster-service: "true"
     spec:
       containers:
-        - image: gcr.io/google_containers/heapster_influxdb:v0.3
-          name: influxdb
-          ports:
-            - containerPort: 8083
-              hostPort: 8083
-            - containerPort: 8086
-              hostPort: 8086
-        - image: gcr.io/google_containers/heapster_grafana:v0.7
+        - image: quay.io/samsung_ag/grafana:krak-62
           name: grafana
           env:
             - name: INFLUXDB_EXTERNAL_URL
               value: http://$INFLUXDB_EXTERNAL_HOST:8086/db/
             - name: INFLUXDB_HOST
-              value: monitoring-influxdb
+              value: influxdb
             - name: INFLUXDB_PORT
               value: "8086"
