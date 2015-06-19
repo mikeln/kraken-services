@@ -20,7 +20,7 @@ spec:
         kubernetes.io/cluster-service: "true"
     spec:
       containers:
-        - image: quay.io/samsung_ag/influxdb:krak-62
+        - image: quay.io/samsung_ag/influxdb:latest
           name: influxdb
           ports:
             - containerPort: 8083
