@@ -3,8 +3,11 @@ kind: Service
 apiVersion: v1beta3
 metadata: 
   name: load-generator-master
+  namespace: default
   labels: 
     name: load-generator-master
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "Locust"
 spec: 
   type: NodePort
   ports: 
