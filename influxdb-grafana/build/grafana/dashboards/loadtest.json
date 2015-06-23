@@ -68,9 +68,9 @@
             {
               "target": "",
               "function": "median",
-              "column": "requests_per_second",
+              "column": "value",
               "series": "trogdor_rps",
-              "query": "select request_key, median(requests_per_second) from \"trogdor_rps\" where $timeFilter group by time($interval), request_key fill(0) order asc",
+              "query": "select request_key, median(value) from \"trogdor_rps\" where $timeFilter group by time($interval), request_key fill(0) order asc",
               "fill": "0",
               "groupby_field": "request_key"
             }
@@ -140,9 +140,9 @@
           "targets": [
             {
               "function": "median",
-              "column": "response_time",
+              "column": "value",
               "series": "trogdor_rts",
-              "query": "select median(response_time) from \"trogdor_rts\" where $timeFilter group by time($interval) order asc"
+              "query": "select median(value) from \"trogdor_rts\" where $timeFilter group by time($interval) order asc"
             }
           ],
           "aliasColors": {},

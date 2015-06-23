@@ -24,7 +24,7 @@ spec:
           name: grafana
           env:
             - name: GRAFANA_DEFAULT_DASHBOARD
-              value: /dashboard/file/trogdor.json
+              value: /dashboard/file/loadtest.json
             - name: INFLUXDB_EXTERNAL_URL
               value: http://$INFLUXDB_EXTERNAL_HOST:8086/db/
             - name: INFLUXDB_HOST
