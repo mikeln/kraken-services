@@ -5,8 +5,8 @@ metadata:
   namespace: default
   labels:
     k8s-app: InfluxDB
-    kubernetes.io/cluster-service: "true"
-    kubernetes.io/name: "InfluxDB"
+    kubernetes.io/cluster-service: true
+    kubernetes.io/name: InfluxDB
 spec:
   ports:
     - name: http
@@ -18,4 +18,4 @@ spec:
   selector:
     k8s-app: InfluxDB
   publicIPs:
-    - "$INFLUXDB_PUBLIC_IP"
+    - $INFLUXDB_PUBLIC_IP

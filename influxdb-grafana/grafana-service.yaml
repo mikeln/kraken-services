@@ -4,8 +4,8 @@ metadata:
   name: grafana
   namespace: default
   labels:
-    kubernetes.io/cluster-service: "true"
-    kubernetes.io/name: "Grafana"
+    kubernetes.io/cluster-service: true
+    kubernetes.io/name: Grafana
 spec:
   ports:
     - port: 8002
@@ -13,4 +13,4 @@ spec:
   selector:
     k8s-app: Grafana
   publicIPs:
-    - "$GRAFANA_PUBLIC_IP"
+    - $GRAFANA_PUBLIC_IP
