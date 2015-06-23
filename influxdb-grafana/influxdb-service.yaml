@@ -5,7 +5,7 @@ metadata:
   namespace: default
   labels:
     k8s-app: InfluxDB
-    kubernetes.io/cluster-service: true
+    kubernetes.io/cluster-service: "true"
     kubernetes.io/name: InfluxDB
 spec:
   ports:

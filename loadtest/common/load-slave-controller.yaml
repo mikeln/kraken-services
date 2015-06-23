@@ -31,7 +31,7 @@ spec:
               value: influxdb
             - 
               name: INFLUXDB_PORT
-              value: 8086
+              value: "8086"
             - 
               name: INFLUXDB_USER
               value: root

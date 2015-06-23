@@ -6,7 +6,7 @@ metadata:
   labels:
     k8s-app: Grafana
     version: v1
-    kubernetes.io/cluster-service: true
+    kubernetes.io/cluster-service: "true"
 spec:
   replicas: 1
   selector:
@@ -17,7 +17,7 @@ spec:
       labels:
         k8s-app: Grafana
         version: v1
-        kubernetes.io/cluster-service: true
+        kubernetes.io/cluster-service: "true"
     spec:
       containers:
         - image: quay.io/samsung_ag/grafana:stable
@@ -30,4 +30,4 @@ spec:
             - name: INFLUXDB_HOST
               value: influxdb
             - name: INFLUXDB_PORT
-              value: 8086
+              value: "8086"
