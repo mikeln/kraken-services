@@ -16,18 +16,26 @@ bind-address = "0.0.0.0"
 reporting-disabled = false
 
 [logging]
+
 # logging level can be one of "fine", "debug", "info", "warn" or "error"
 level  = "info"
-file   = "stdout"         # stdout to log to standard out, or syslog facility
+
+# stdout to log to standard out, or syslog facility
+file   = "/var/log/influxdb.log"
 
 # Configure the admin server
 [admin]
+
 port   = 8083              # binding is disabled if the port isn't set
 
 # Configure the http api
 [api]
-port     = 8086    # binding is disabled if the port isn't set
-# ssl-port = 8087    # Ssl support is enabled if you set a port and cert
+
+# binding is disabled if the port isn't set
+port     = 8086
+
+# ssl support is enabled if you set a port and cert
+# ssl-port = 8087
 # ssl-cert = /path/to/cert.pem
 
 # connections will timeout after this amount of time. Ensures that clients that misbehave
@@ -39,60 +47,83 @@ read-timeout = "1m"
 
   # Configure the graphite api
   [input_plugins.graphite]
+
   enabled = false
-  # address = "0.0.0.0" # If not set, is actually set to bind-address.
+
+  # If not set, is actually set to bind-address.
+  # address = "0.0.0.0"
+
   # port = 2003
-  # database = ""  # store graphite data in this database
-  # udp_enabled = true # enable udp interface on the same port as the tcp interface
+
+  # store graphite data in this database
+  # database = "graphite"
+
+  # enable udp interface on the same port as the tcp interface
+  # udp_enabled = true
 
   # Configure the collectd api
   [input_plugins.collectd]
+
   enabled = false
-  # address = "0.0.0.0" # If not set, is actually set to bind-address.
-  #port = 25826
-  #database = "collectd"
+
+  # If not set, is actually set to bind-address.
+  # address = "0.0.0.0"
+
+  # port = 25826
+
+  # store collectd data in this database
+  # database = "collectd"
+
+  # The path to the collectd types.db file
   # types.db can be found in a collectd installation or on github:
   # https://github.com/collectd/collectd/blob/master/src/types.db
-  #typesdb = "/config/types.db" # The path to the collectd types.db file
+  # typesdb = "/config/types.db"
 
   # Configure the udp api
   [input_plugins.udp]
-  enabled = false
+
+  # enabled = false
+
   # port = 4444
-  # database = ""
+
+  # database = "udp"
 
   # Configure multiple udp apis each can write to separate db.  Just
   # repeat the following section to enable multiple udp apis on
   # different ports.
   [[input_plugins.udp_servers]] # array of tables
+
   enabled = false
+
   # port = 5551
+
   # database = "db1"
 
 # Raft configuration
 [raft]
+
 # The raft port should be open between all servers in a cluster.
 # However, this port shouldn't be accessible from the internet.
-
 port = 8090
 
 # Where the raft logs are stored. The user running InfluxDB will need read/write access.
 dir  = "/data/raft"
 
-debug = false
+# debug = false
 
 # election-timeout = "1s"
 
 [storage]
 
 dir = "/data/db"
+
+# the engine to use for new shards, old shards will continue to use the same engine
+default-engine = "leveldb"
+
 # How many requests to potentially buffer in memory. If the buffer gets filled then writes
 # will still be logged and once the local storage has caught up (or compacted) the writes
 # will be replayed from the WAL
 write-buffer-size = 10000
-
-# the engine to use for new shards, old shards will continue to use the same engine
-default-engine = "leveldb"
 
 # The default setting on this is 0, which means unlimited. Set this to something if you want to
 # limit the max number of open files. max-open-files is per shard so this * that will be max.
@@ -109,44 +140,51 @@ write-batch-size = 5000000
 # The server will check this often for shards that have expired that should be cleared.
 retention-sweep-period = "10m"
 
-[storage.engines.leveldb]
+  [storage.engines.leveldb]
 
-# Maximum mmap open files, this will affect the virtual memory used by
-# the process
-max-open-files = 1000
+  # Maximum mmap open files, this will affect the virtual memory used by
+  # the process
+  max-open-files = 1000
 
-# LRU cache size, LRU is used by leveldb to store contents of the
-# uncompressed sstables. You can use `m` or `g` prefix for megabytes
-# and gigabytes, respectively.
-lru-cache-size = "200m"
+  # LRU cache size, LRU is used by leveldb to store contents of the
+  # uncompressed sstables. You can use `m` or `g` prefix for megabytes
+  # and gigabytes, respectively.
+  lru-cache-size = "200m"
 
-[storage.engines.rocksdb]
+  # max-open-shards
 
-# Maximum mmap open files, this will affect the virtual memory used by
-# the process
-max-open-files = 1000
+  # point-batch-size
 
-# LRU cache size, LRU is used by rocksdb to store contents of the
-# uncompressed sstables. You can use `m` or `g` prefix for megabytes
-# and gigabytes, respectively.
-lru-cache-size = "200m"
+  # write-batch-size
 
-[storage.engines.hyperleveldb]
+  [storage.engines.rocksdb]
 
-# Maximum mmap open files, this will affect the virtual memory used by
-# the process
-max-open-files = 1000
+  # Maximum mmap open files, this will affect the virtual memory used by
+  # the process
+  max-open-files = 1000
 
-# LRU cache size, LRU is used by rocksdb to store contents of the
-# uncompressed sstables. You can use `m` or `g` prefix for megabytes
-# and gigabytes, respectively.
-lru-cache-size = "200m"
+  # LRU cache size, LRU is used by rocksdb to store contents of the
+  # uncompressed sstables. You can use `m` or `g` prefix for megabytes
+  # and gigabytes, respectively.
+  lru-cache-size = "200m"
 
-[storage.engines.lmdb]
+  [storage.engines.hyperleveldb]
 
-map-size = "100g"
+  # Maximum mmap open files, this will affect the virtual memory used by
+  # the process
+  max-open-files = 1000
+
+  # LRU cache size, LRU is used by rocksdb to store contents of the
+  # uncompressed sstables. You can use `m` or `g` prefix for megabytes
+  # and gigabytes, respectively.
+  lru-cache-size = "200m"
+
+  [storage.engines.lmdb]
+
+  map-size = "100g"
 
 [cluster]
+
 # A comma separated list of servers to seed
 # this server. this is only relevant when the
 # server is joining a new cluster. Otherwise
@@ -187,8 +225,12 @@ concurrent-shard-query-limit = 10
 [wal]
 
 dir   = "/data/wal"
-flush-after = 1000 # the number of writes after which wal will be flushed, 0 for flushing on every write
-bookmark-after = 1000 # the number of writes after which a bookmark will be created
+
+# the number of writes after which wal will be flushed, 0 for flushing on every write
+flush-after = 1000
+
+# the number of writes after which a bookmark will be created
+bookmark-after = 1000
 
 # the number of writes after which an index entry is created pointing
 # to the offset of the first request, default to 1k

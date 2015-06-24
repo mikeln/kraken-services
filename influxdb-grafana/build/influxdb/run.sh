@@ -2,9 +2,11 @@
 
 set -m
 
-CONFIG_FILE="/config/config.toml"
-API_URL="http://localhost:8086"
-SHARD_CONFIG="/config/shardSpace.json"
+INFLUXDB_INIT_PWD=${INFLUXDB_INIT_PWD:-"root"}
+CONFIG_FILE=${CONFIG_FILE:-"/config/config.toml"}
+SHARD_CONFIG=${SHARD_CONFIG:-"/config/shardSpace.json"}
+API_URL=${API_URL:-"http://localhost:8086"}
+PRE_CREATE_DB=${PRE_CREATE_DB:-"**None**"}
 
 if [ "${PRE_CREATE_DB}" == "**None**" ]; then
     unset PRE_CREATE_DB
@@ -16,7 +18,7 @@ if [ -n "${PRE_CREATE_DB}" ]; then
     else
         echo "=> Starting InfluxDB ..."
         exec /usr/bin/influxdb -config=${CONFIG_FILE} &
-        PASS=${INFLUXDB_INIT_PWD:-root}
+        PASS=${INFLUXDB_INIT_PWD}
         arr=$(echo ${PRE_CREATE_DB} | tr ";" "\n")
 
         #wait for the startup of influxdb
