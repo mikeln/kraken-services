@@ -67,7 +67,7 @@ def get_requests_per_second(stat, client_id):
     })
 
     # drop things on the floor and run away, laughing maniacally 
-    if dashboard_queue.full()
+    if dashboard_queue.full():
       return
 
     dashboard_queue.put({
@@ -102,7 +102,7 @@ def get_response_time(stat, client_id):
     })
 
     # drop things on the floor and run away, laughing maniacally 
-    if dashboard_queue.full()
+    if dashboard_queue.full():
       continue
 
     dashboard_queue.put({
@@ -130,10 +130,11 @@ class WebsiteUser(HttpLocust):
 
 # Server sent events
 class ServerSentEvent:
-    FIELDS = ('data')
-    def __init__(self, data):
+    FIELDS = ('event', 'data', 'id')
+    def __init__(self, data, event=None, event_id=None):
         self.data = data
-        self.type = event 
+        self.event = event 
+        self.id = event_id 
 
     def encode(self):
         if not self.data:
@@ -151,7 +152,7 @@ def my_dashboard():
 
 @web.app.route("/files/<path:path>")
 def send_js(path):
-    return send_file(PROJECT_ROOT + '/files/' + path)
+    return send_file(project_root + '/files/' + path)
 
 @web.app.route("/stream")
 def stream():
@@ -161,7 +162,7 @@ def stream():
               time.sleep(0.05)
               continue
             queue_data = dashboard_queue.get()
-            data = json.dumps({"type": queue_data['type'], "slave_id": queue_data['request_key'], 'value': queue_data['value']})
+            data = json.dumps({"type": queue_data['type'], "slave_id": queue_data['request_key'], 'val': queue_data['value']})
             ev = ServerSentEvent(data)
             yield ev.encode()
             time.sleep(0.05)
