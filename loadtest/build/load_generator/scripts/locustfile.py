@@ -2,13 +2,23 @@ import logging
 import gevent
 import pprint
 import os
+import json
+import flask
+import jinja2
 import time
 from gevent.queue import Queue
 from gevent.threadpool import ThreadPool
-from locust import HttpLocust, TaskSet, task, events
+from locust import HttpLocust, TaskSet, task, events, web
+from flask import Flask, Response, render_template, send_from_directory, send_file
 from influxdb.influxdb08 import InfluxDBClient
 
 influx_queue = Queue()
+dashboard_queue = Queue(10000)
+project_root = os.path.dirname(os.path.abspath(__file__))
+web.app.jinja_loader = jinja2.ChoiceLoader([
+    jinja2.FileSystemLoader(os.path.join(project_root, 'templates')),
+    web.app.jinja_loader,
+])
 
 def influx_worker():
   """The worker pops each item off the queue and sends it to influxdb."""
@@ -56,6 +66,16 @@ def get_requests_per_second(stat, client_id):
       'received_time': now
     })
 
+    # drop things on the floor and run away, laughing maniacally 
+    if dashboard_queue.full()
+      return
+
+    dashboard_queue.put({
+      'type': 'rps',
+      'request_key': request_key,
+      'value': count
+    })
+
 def get_response_time(stat, client_id):
   request = stat['method'] + stat['name'].replace('/', '-')
 
@@ -81,6 +101,16 @@ def get_response_time(stat, client_id):
       'received_time': now
     })
 
+    # drop things on the floor and run away, laughing maniacally 
+    if dashboard_queue.full()
+      continue
+
+    dashboard_queue.put({
+      'type': 'art',
+      'request_key': request_key,
+      'value': count
+    })
+
 def slave_report_log (client_id, data, ** kw):
   for stat in data['stats']:
     get_response_time(stat, client_id)
@@ -97,6 +127,46 @@ class JsonSerialization(TaskSet):
 
 class WebsiteUser(HttpLocust):
   task_set = JsonSerialization
+
+# Server sent events
+class ServerSentEvent:
+    FIELDS = ('data')
+    def __init__(self, data):
+        self.data = data
+        self.type = event 
+
+    def encode(self):
+        if not self.data:
+            return ""
+        ret = []
+        for field in self.FIELDS:
+            entry = getattr(self, field) 
+            if entry is not None:
+                ret.extend(["%s: %s" % (field, line) for line in entry.split("\n")])
+        return "\n".join(ret) + "\n\n"
+
+@web.app.route("/dashboard")
+def my_dashboard():
+    return render_template('dashboard.html')
+
+@web.app.route("/files/<path:path>")
+def send_js(path):
+    return send_file(PROJECT_ROOT + '/files/' + path)
+
+@web.app.route("/stream")
+def stream():
+    def gen():
+        while True:
+            if dashboard_queue.empty():
+              time.sleep(0.05)
+              continue
+            queue_data = dashboard_queue.get()
+            data = json.dumps({"type": queue_data['type'], "slave_id": queue_data['request_key'], 'value': queue_data['value']})
+            ev = ServerSentEvent(data)
+            yield ev.encode()
+            time.sleep(0.05)
+
+    return Response(gen(), mimetype="text/event-stream")
 
 events.slave_report += slave_report_log
 gevent.spawn(influx_worker)
