@@ -17,7 +17,7 @@ spec:
       containers: 
         - 
           name: framework
-          image: quay.io/samsung_ag/trogdor-framework:stable
+          image: 172.16.16.15:5000/trogdor-framework:1
           ports: 
             - 
               containerPort: 9080

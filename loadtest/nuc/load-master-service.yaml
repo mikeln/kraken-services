@@ -23,6 +23,6 @@ spec:
       name: locust-slavecomm2
       protocol: TCP
   publicIPs:
-    - 172.16.1.103
+    - 172.16.16.16
   selector:
     name: load-generator-master
