@@ -1,0 +1,26 @@
+---
+kind: ReplicationController
+apiVersion: v1beta3
+metadata: 
+  name: framework
+  labels: 
+    name: framework
+spec: 
+  replicas: 10
+  selector: 
+    name: framework
+  template: 
+    metadata: 
+      labels: 
+        name: framework
+    spec: 
+      containers: 
+        - 
+          name: framework
+          image: quay.io/samsung_ag/trogdor-framework:stable
+          ports: 
+            - 
+              containerPort: 9080
+              protocol: TCP
+      nodeSelector:
+        region: zone3
