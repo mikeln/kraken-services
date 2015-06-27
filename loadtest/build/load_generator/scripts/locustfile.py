@@ -13,7 +13,7 @@ from flask import Flask, Response, render_template, send_from_directory, send_fi
 from influxdb.influxdb08 import InfluxDBClient
 
 influx_queue = Queue()
-dashboard_queue = Queue(10000)
+dashboard_queue = Queue(1000)
 project_root = os.path.dirname(os.path.abspath(__file__))
 web.app.jinja_loader = jinja2.ChoiceLoader([
     jinja2.FileSystemLoader(os.path.join(project_root, 'templates')),

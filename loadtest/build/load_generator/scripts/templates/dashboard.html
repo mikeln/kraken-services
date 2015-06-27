@@ -66,8 +66,8 @@ function initGraph(data_object) {
         series: new Rickshaw.Series.FixedDuration([{
           name: data_object.slave_id
         }], palette, {
-          timeInterval: 1000,
-          maxDataPoints: 1000,
+          timeInterval: 2000,
+          maxDataPoints: 100,
           timeBase: new Date().getTime() / 1000
         })
       } );
