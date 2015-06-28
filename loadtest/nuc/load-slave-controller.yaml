@@ -17,7 +17,7 @@ spec:
       containers: 
         - 
           name: load-generator-slave
-          image: 172.16.16.15:5000/trogdor-load-generator
+          image: 172.16.16.15:5000/trogdor-load-generator:nuc
           command: 
             - locust
             - -f
