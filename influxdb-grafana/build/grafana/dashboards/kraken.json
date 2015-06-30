@@ -50,7 +50,7 @@
           "spyable": true,
           "options": false,
           "legend": {
-            "show": true,
+            "show": false,
             "values": true,
             "min": false,
             "max": true,
@@ -139,7 +139,7 @@
           "spyable": true,
           "options": false,
           "legend": {
-            "show": true,
+            "show": false,
             "values": true,
             "min": false,
             "max": true,
@@ -235,7 +235,7 @@
           "spyable": true,
           "options": false,
           "legend": {
-            "show": true,
+            "show": false,
             "values": true,
             "min": false,
             "max": true,
@@ -320,7 +320,7 @@
           "spyable": true,
           "options": false,
           "legend": {
-            "show": true,
+            "show": false,
             "values": true,
             "min": true,
             "max": true,
@@ -413,7 +413,7 @@
           "spyable": true,
           "options": false,
           "legend": {
-            "show": true,
+            "show": false,
             "values": true,
             "min": false,
             "max": true,
@@ -497,7 +497,7 @@
           "spyable": true,
           "options": false,
           "legend": {
-            "show": true,
+            "show": false,
             "values": true,
             "min": false,
             "max": true,
