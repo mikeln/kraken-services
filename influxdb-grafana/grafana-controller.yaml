@@ -20,7 +20,7 @@ spec:
         kubernetes.io/cluster-service: "true"
     spec:
       containers:
-        - image: quay.io/samsung_ag/grafana:stable
+        - image: quay.io/samsung_ag/grafana:latest
           name: grafana
           env:
             - name: GRAFANA_DEFAULT_DASHBOARD
