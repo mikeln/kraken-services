@@ -447,15 +447,15 @@
               "function": "derivative",
               "column": "value",
               "series": "cpu/usage_ns_cumulative",
-              "query": "select hostname, derivative(value) from \"cpu/usage_ns_cumulative\" where $timeFilter and container_name = '/' group by time($interval), hostname fill(0) order asc",
+              "query": "select max(value) from /container_name:\\/_host_id:.*cpu_usage_ns_cumulative/ where $timeFilter group by time($interval) fill(0) order asc",
               "condition_filter": true,
               "interval": "",
               "groupby_field_add": true,
               "groupby_field": "hostname",
-              "alias": "",
+              "alias": "$0.$1.$2.$3",
               "condition": "container_name = '/'",
               "fill": "0",
-              "rawQuery": false
+              "rawQuery": true
             }
           ],
           "aliasColors": {},
@@ -532,14 +532,15 @@
               "function": "max",
               "column": "value",
               "series": "memory/usage_bytes_gauge",
-              "query": "select hostname, max(value) from \"memory/usage_bytes_gauge\" where $timeFilter and container_name = '/' group by time($interval), hostname fill(0) order asc",
+              "query": "select max(value) from /container_name:\\/_host_id:.*memory_usage_bytes_gauge/ where $timeFilter group by time($interval) fill(0) order asc",
               "condition_filter": true,
               "interval": "",
               "groupby_field_add": true,
               "groupby_field": "hostname",
-              "alias": "",
+              "alias": "$0.$1.$2.$3",
               "condition": "container_name = '/'",
-              "fill": "0"
+              "fill": "0",
+              "rawQuery": true
             }
           ],
           "aliasColors": {},
