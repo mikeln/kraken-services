@@ -25,7 +25,9 @@ spec:
           command:
             - /heapster
             - --source=kubernetes:http://kubernetes-ro?auth=
-            - --sink=influxdb:http://influxdb:8086
+            - --sink=influxdb:http://influxdb:8086?avoidColumns=true
+            - --poll_duration=2m
+            - --stats_resolution=1m
           volumeMounts:
             - name: ssl-certs
               mountPath: /etc/ssl/certs

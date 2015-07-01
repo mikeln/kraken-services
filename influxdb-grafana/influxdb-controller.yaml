@@ -27,3 +27,10 @@ spec:
               hostPort: 8083
             - containerPort: 8086
               hostPort: 8086
+          env:
+            - name: INFLUXDB_INIT_PWD
+              value: root
+            - name: PRE_CREATE_DB
+              value: k8s;grafana 
+      nodeSelector:
+        kraken-node: node-01

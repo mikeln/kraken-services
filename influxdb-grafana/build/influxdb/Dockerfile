@@ -8,17 +8,14 @@ RUN apt-get update && apt-get install -y curl && curl -s -o /tmp/influxdb_latest
   dpkg -i /tmp/influxdb_latest_amd64.deb && \
   rm /tmp/influxdb_latest_amd64.deb
 
-ADD config.toml /config/config.toml
-ADD collectd-types.db /config/types.db
-ADD shardSpace.json /config/shardSpace.json
-
 ADD run.sh /run.sh
 RUN chmod +x /run.sh
 
-ENV PRE_CREATE_DB k8s;grafana
+ADD collectd-types.db /config/types.db
+ADD shardSpace.json /config/shardSpace.json
+ADD config.toml /config/config.toml
 
 EXPOSE 8083 8086 8084 8090 8099
-
 VOLUME ["/data"]
 
 CMD ["/run.sh"]
