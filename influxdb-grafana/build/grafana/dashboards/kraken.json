@@ -77,7 +77,7 @@
               "function": "max",
               "column": "value",
               "series": "cpu/usage_ns_cumulative",
-              "query": "select pod_name, max(value) from \"cpu/usage_ns_cumulative\" where $timeFilter and pod_name <> '' group by time($interval), pod_name fill(0) order asc",
+              "query": "select max(value) from /container_name:[^\\/]*_host_id:.*cpu_usage_ns_cumulative/ where $timeFilter group by time($interval) fill(0) order asc",
               "condition_filter": false,
               "condition_key": "",
               "condition_op": "=",
@@ -85,15 +85,20 @@
               "interval": "",
               "groupby_field_add": true,
               "groupby_field": "pod_name",
-              "alias": "",
+              "alias": "$0.$1.$2.$3",
               "fill": "0",
-              "rawQuery": false,
+              "rawQuery": true,
               "hide": false,
               "condition": "pod_name <> ''"
+            },
+            {
+              "target": "",
+              "function": "mean",
+              "column": "value"
             }
           ],
           "aliasColors": {},
-          "title": "Pod CPU time",
+          "title": "Container CPU time",
           "datasource": null,
           "renderer": "png",
           "annotate": {
@@ -103,7 +108,7 @@
           "seriesOverrides": [],
           "links": [],
           "leftYAxisLabel": "",
-          "interval": "10s"
+          "interval": "1m"
         },
         {
           "span": 6,
@@ -166,7 +171,7 @@
               "function": "mean",
               "column": "value",
               "series": "memory/usage_bytes_gauge",
-              "query": "select pod_name, mean(value) from \"memory/usage_bytes_gauge\" where $timeFilter and pod_name <> '' group by time($interval), pod_name fill(0) order asc",
+              "query": "select mean(value) from /container_name:[^\\/]*_host_id:.*memory_usage_bytes_gauge/ where $timeFilter group by time($interval) fill(0) order asc",
               "condition_filter": false,
               "condition_key": "",
               "condition_op": "=",
@@ -174,9 +179,10 @@
               "interval": "",
               "groupby_field_add": true,
               "groupby_field": "pod_name",
-              "alias": "",
+              "alias": "$0.$1.$2.$3",
               "condition": "pod_name <> ''",
-              "fill": "0"
+              "fill": "0",
+              "rawQuery": true
             }
           ],
           "aliasColors": {},
@@ -189,7 +195,7 @@
           "id": 2,
           "seriesOverrides": [],
           "links": [],
-          "interval": "10s"
+          "interval": "1m"
         }
       ],
       "notice": false
@@ -263,14 +269,14 @@
               "function": "derivative",
               "column": "value",
               "series": "network/rx_bytes_cumulative",
-              "query": "select hostname, derivative(value) from \"network/rx_bytes_cumulative\" where $timeFilter and container_name = '/' group by time($interval), hostname fill(0) order asc",
+              "query": "select max(value) from /container_name:\\/_host_id:.*network_rx_bytes_cumulative/ where $timeFilter group by time($interval) fill(0) order asc",
               "condition_filter": true,
               "interval": "",
               "groupby_field_add": true,
               "groupby_field": "hostname",
-              "alias": "",
+              "alias": "$0.$1.$2.$3",
               "condition": "container_name = '/'",
-              "rawQuery": false,
+              "rawQuery": true,
               "fill": "0"
             }
           ],
@@ -284,7 +290,7 @@
           "id": 3,
           "seriesOverrides": [],
           "links": [],
-          "interval": "10s"
+          "interval": "1m"
         },
         {
           "span": 6,
@@ -347,14 +353,15 @@
               "function": "derivative",
               "column": "value",
               "series": "network/tx_bytes_cumulative",
-              "query": "select hostname, derivative(value) from \"network/tx_bytes_cumulative\" where $timeFilter and container_name = '/' group by time($interval), hostname fill(0) order asc",
+              "query": "select max(value) from /container_name:\\/_host_id:.*network_tx_bytes_cumulative/ where $timeFilter group by time($interval) fill(0) order asc",
               "condition_filter": true,
               "interval": "",
               "groupby_field_add": true,
               "groupby_field": "hostname",
-              "alias": "",
+              "alias": "$0.$1.$2.$3",
               "condition": "container_name = '/'",
-              "fill": "0"
+              "fill": "0",
+              "rawQuery": true
             }
           ],
           "aliasColors": {},
@@ -367,7 +374,7 @@
           "id": 4,
           "seriesOverrides": [],
           "links": [],
-          "interval": "10s"
+          "interval": "1m"
         }
       ],
       "notice": false
@@ -460,7 +467,7 @@
           },
           "id": 7,
           "seriesOverrides": [],
-          "interval": "10s",
+          "interval": "1m",
           "links": []
         },
         {
@@ -545,7 +552,7 @@
           "id": 8,
           "seriesOverrides": [],
           "links": [],
-          "interval": "10s"
+          "interval": "1m"
         }
       ],
       "notice": false
@@ -585,7 +592,7 @@
     }
   ],
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "templating": {
