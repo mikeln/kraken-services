@@ -22,8 +22,8 @@ spec:
       containers:
         - name: etcd
           image: quay.io/coreos/etcd:v2.0.9
+          # command: "/etcd"
           args:
-            # command = "/etcd"
             - -listen-client-urls
             - http://127.0.0.1:2379,http://127.0.0.1:4001
             - -advertise-client-urls
@@ -32,22 +32,22 @@ spec:
             - skydns-etcd
         - name: kube2sky
           image: gcr.io/google_containers/kube2sky:1.9
+          # command: "/kube2sky"
           args:
-            # command = "/kube2sky"
-            -  -domain=kubernetes.local
-            -  -kube_master_url=$KUBE_MASTER_URL
+            - -domain=$CLUSTER_DOMAIN
+            - -kube_master_url=$KUBE_MASTER_URL
             # - -kubecfg_file=/etc/dns_token/kubeconfig
           # volumeMounts:
-          #  - mountPath: /etc/dns_token
-          #    name: dns-token
-          #    readOnly: true
+          # - mountPath: /etc/dns_token
+            # name: dns-token
+            # readOnly: true
         - name: skydns
           image: gcr.io/google_containers/skydns:2015-03-11-001
+          # command: "/skydns"
           args:
-            # command = "/skydns"
             - -machines=http://localhost:4001
             - -addr=0.0.0.0:53
-            - -domain=kubernetes.local.
+            - -domain=$CLUSTER_DOMAIN.
           ports:
             - containerPort: 53
               name: dns
@@ -60,11 +60,11 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - nslookup kubernetes.default.kubernetes.local localhost >/dev/null
+                - nslookup kubernetes.default.$CLUSTER_DOMAIN localhost >/dev/null
             initialDelaySeconds: 30
             timeoutSeconds: 5
       dnsPolicy: Default  # Don't use cluster DNS.
       # volumes:
-      #  - name: dns-token
-      #    secret:
-      #        seretName: token-system-dns
+      # - name: dns-token
+        # secret:
+          # secretName: token-system-dns
