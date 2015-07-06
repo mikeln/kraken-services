@@ -24,7 +24,7 @@ spec:
           name: heapster
           command:
             - /heapster
-            - --source=kubernetes:http://kubernetes-ro?auth=
+            - --source=kubernetes:https://kubernetes?apiVersion=v1beta3&insecure=true&inClusterConfigFile=false&auth=
             - --sink=influxdb:http://influxdb:8086?avoidColumns=true
             - --poll_duration=2m
             - --stats_resolution=1m
