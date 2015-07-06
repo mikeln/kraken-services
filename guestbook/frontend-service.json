@@ -1,23 +1,29 @@
 {
-   "kind":"Service",
-   "apiVersion":"v1beta3",
-   "metadata":{
-      "name":"frontend",
-      "labels":{
-         "name":"frontend"
+  "kind": "Service",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "frontend",
+    "namespace": "default",
+    "labels": {
+      "name": "frontend"
+    }
+  },
+  "spec": {
+    "ports": [
+      {
+        "protocol": "TCP",
+        "port": 80,
+        "targetPort": 80,
+        "nodePort": 0
       }
-   },
-   "spec":{
-      "ports": [
-        {
-          "port":80,
-          "targetPort":80,
-          "protocol":"TCP"
-        }
-      ],
-      "publicIPs": [ "$SERVICE_IP" ],
-      "selector":{
-         "name":"frontend"
-      }
-   }
+    ],
+    "selector": {
+      "name": "frontend"
+    },
+    "type": "ClusterIP",
+    "deprecatedPublicIPs": [
+      "$SERVICE_IP"
+    ],
+    "sessionAffinity": "None"
+  }
 }
