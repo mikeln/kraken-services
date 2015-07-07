@@ -22,11 +22,11 @@ spec:
       containers:
       - command:
         - /heapster
-        - --source=kubernetes:https://kubernetes?apiVersion=v1&insecure=true&inClusterConfigFile=false&auth=
+        - --source=kubernetes:https://kubernetes?apiVersion=v1&insecure=true&inClusterConfig=false
         - --sink=influxdb:http://influxdb:8086?avoidColumns=true
         - --poll_duration=10s
         - --stats_resolution=5s
-        image: gcr.io/google_containers/heapster:v0.14.2
+        image: gcr.io/google_containers/heapster:v0.15.0
         imagePullPolicy: IfNotPresent
         name: heapster
         volumeMounts:
