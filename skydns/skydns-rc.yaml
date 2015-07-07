@@ -1,12 +1,12 @@
 # based on https://github.com/GoogleCloudPlatform/kubernetes/blob/master/cluster/addons/dns/skydns-rc.yaml.in
-apiVersion: v1beta3
+apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: kube-dns-v3
-  namespace: default
   labels:
     k8s-app: kube-dns-v3
     kubernetes.io/cluster-service: "true"
+  name: kube-dns-v3
+  namespace: default
 spec:
   replicas: 3
   selector:

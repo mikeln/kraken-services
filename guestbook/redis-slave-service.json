@@ -1,22 +1,25 @@
 {
-   "kind":"Service",
-   "apiVersion":"v1beta3",
-   "metadata":{
-      "name":"redis-slave",
-      "labels":{
-         "name":"redis-slave"
+  "kind": "Service",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "redis-slave",
+    "namespace": "default",
+    "labels": {
+      "name": "redis-slave"
+    }
+  },
+  "spec": {
+    "ports": [
+      {
+        "protocol": "TCP",
+        "port": 6379,
+        "targetPort": 6379,
+        "nodePort": 0
       }
-   },
-   "spec":{
-      "ports": [
-        {
-          "port":6379,
-          "targetPort":6379,
-          "protocol":"TCP"
-        }
-      ],
-      "selector":{
-         "name":"redis-slave"
-      }
-   }
-}
+    ],
+    "selector": {
+      "name": "redis-slave"
+    },
+    "type": "ClusterIP",
+    "sessionAffinity": "None"
+  }

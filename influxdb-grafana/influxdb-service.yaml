@@ -1,21 +1,27 @@
-apiVersion: v1beta3
+apiVersion: v1
 kind: Service
 metadata:
-  name: influxdb
-  namespace: default
   labels:
     k8s-app: InfluxDB
     kubernetes.io/cluster-service: "true"
     kubernetes.io/name: InfluxDB
+  name: influxdb
+  namespace: default
 spec:
+  deprecatedPublicIPs:
+  - $INFLUXDB_PUBLIC_IP
   ports:
-    - name: http
-      port: 8083
-      targetPort: 8083
-    - name: api
-      port: 8086
-      targetPort: 8086
+  - name: http
+    nodePort: 0
+    port: 8083
+    protocol: TCP
+    targetPort: 8083
+  - name: api
+    nodePort: 0
+    port: 8086
+    protocol: TCP
+    targetPort: 8086
   selector:
     k8s-app: InfluxDB
-  publicIPs:
-    - $INFLUXDB_PUBLIC_IP
+  sessionAffinity: None
+  type: ClusterIP
