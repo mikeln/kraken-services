@@ -32,12 +32,12 @@ spec:
         - -t
         - KUBERNETES_RO
         - -d
-        - /var/prometheus/
+        - /var/prometheus
         env:
         - name: KUBERNETES_RO_SERVICE_HOST
           value: localhost
         - name: KUBERNETES_RO_SERVICE_PORT
-          value: "8001"
+          value: '8001'
         image: quay.io/spiffxp/kube-prometheus:latest
         imagePullPolicy: Always
         name: kube-prometheus

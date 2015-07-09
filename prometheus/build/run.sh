@@ -31,27 +31,36 @@ show_usage() {
 }
 
 build_config() {
-  echo >$1 'global: { scrape_interval: "10s" evaluation_interval: "10s"}'
+  cat <<EOS
+global:
+  scrape_interval: 10s
+  evaluation_interval: 10s
+
+scrape_configs:
+EOS
   local target
 
   ### Allow prometheus to scrape multiple targets
   ### i.e. -t KUBERNETES_RO,MY_METRICS_ABC
-  for target in ${2//,/ }; do
-    local host_variable=$target"_SERVICE_HOST"
-    local port_variable=$target"_SERVICE_PORT"
-    local host=`eval echo '$'$host_variable`
-    local port=`eval echo '$'$port_variable`
-    echo "Checking $target"
-    if [ -z $host ]; then
-      echo "No env variable for $host_variable."
+  for target in ${1//,/ }; do
+    local host_variable="${target}_SERVICE_HOST"
+    local port_variable="${target}_SERVICE_PORT"
+    local host=$(eval echo '$'$host_variable)
+    local port=$(eval echo '$'$port_variable)
+    if [ -z ${host} ]; then
+      >&2 echo "No env variable for ${host_variable}."
       exit 3
     fi
-    if [ -z $port ]; then
-      echo "No env variable for $port_variable."
+    if [ -z ${port} ]; then
+      >&2 echo "No env variable for ${port_variable}."
       exit 3
     fi
-    local target_address="http://"$host":"$port"/metrics"
-    echo >>$1 "job: { name: \"${target}\" target_group: { target: \"${target_address}\" } }"
+    local target_address="${host}:${port}"
+    cat <<EOS
+- job_name: '${target}'
+  target_groups:
+  - targets: [ '${target_address}' ]
+EOS
   done
 }
 
@@ -80,7 +89,7 @@ fi
 echo "------------------"
 echo "Using $location as the root for prometheus configs and data."
 mkdir -p $location
-config="$location/config.pb"
+config="$location/prometheus.yaml"
 storage="$location/storage"
 
 echo "-------------------"
@@ -89,10 +98,8 @@ echo "targets: $targets"
 echo "config: $config"
 echo "storage: $storage"
 
-build_config $config $targets
-echo "-------------------"
 echo "config file:"
-cat $config
+build_config $targets | tee $config
 echo "-------------------"
 
 exec /bin/prometheus \
