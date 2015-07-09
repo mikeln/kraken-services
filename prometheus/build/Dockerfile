@@ -1,7 +1,7 @@
 FROM       prom/prometheus
-MAINTAINER Marcin Wielgus <mwielgus@google.com>
+MAINTAINER Aaron Crickenberger <spiffxp@gmail.com>
 
-COPY ./run_prometheus.sh /prometheus/run_prometheus.sh
+COPY ./run.sh /prometheus/run.sh
 
-ENTRYPOINT ["/bin/sh", "/prometheus/run_prometheus.sh"]
+ENTRYPOINT ["/bin/sh", "/prometheus/run.sh"]
 CMD []

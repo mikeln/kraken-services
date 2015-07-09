@@ -28,8 +28,7 @@ spec:
         volumeMounts:
         - mountPath: /promdash
           name: data
-      - command:
-        - ./run_prometheus.sh
+      - args:
         - -t
         - KUBERNETES_RO
         - -d
@@ -39,8 +38,8 @@ spec:
           value: localhost
         - name: KUBERNETES_RO_SERVICE_PORT
           value: "8001"
-        image: jayunit100/kube-prometheus
-        imagePullPolicy: IfNotPresent
+        image: quay.io/spiffxp/kube-prometheus:latest
+        imagePullPolicy: Always
         name: kube-prometheus
         ports:
         - containerPort: 9090

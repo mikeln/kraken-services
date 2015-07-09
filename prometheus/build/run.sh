@@ -23,7 +23,7 @@
 #
 
 show_usage() {
-  echo "usage: ./run_prometheus -t TARGET_1,TARGET_2 -d data_directory"
+  echo "usage: $0 -t TARGET_1,TARGET_2 -d data_directory"
   echo "where"
   echo " -t List of services to be monitored. Each service T should be described by"
   echo "    the T_SERVICE_HOST and T_SERVICE_PORT env variables."
@@ -96,7 +96,7 @@ cat $config
 echo "-------------------"
 
 exec /bin/prometheus \
-  "-logtostderr" \
+  "-log.level=debug" \
   "-config.file=$config" \
   "-storage.local.path=$storage" \
   "-web.console.libraries=/go/src/github.com/prometheus/prometheus/console_libraries" \
