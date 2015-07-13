@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels:
+    name: prometheus
+  name: prometheus
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    name: prometheus
+  template:
+    metadata:
+      labels:
+        name: prometheus
+    spec:
+      containers:
+      - env:
+        - name: DATABASE_URL
+          value: sqlite3:/promdash/file.sqlite3
+        image: prom/promdash
+        imagePullPolicy: IfNotPresent
+        name: promdash
+        ports:
+        - containerPort: 3000
+          hostPort: 3000
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /promdash
+          name: data
+      - command:
+        - ./run_prometheus.sh
+        - -t
+        - KUBERNETES_RO
+        - -d
+        - /var/prometheus/
+        env:
+        - name: KUBERNETES_RO_SERVICE_HOST
+          value: localhost
+        - name: KUBERNETES_RO_SERVICE_PORT
+          value: "8001"
+        image: jayunit100/kube-prometheus
+        imagePullPolicy: IfNotPresent
+        name: kube-prometheus
+        ports:
+        - containerPort: 9090
+          hostPort: 9090
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /var/prometheus/
+          name: data
+      - args:
+        - proxy
+        - --port=8001
+        - --api-prefix=/
+        - --server=https://kubernetes
+        - --insecure-skip-tls-verify=true
+        - --api-version=v1
+        - --logtostderr=true
+        - --v=2
+        image: gcr.io/google_containers/kubectl:v0.18.0-350-gfb3305edcf6c1a
+        imagePullPolicy: IfNotPresent
+        name: kubectl-proxy
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /mnt/promdash
+        name: data
