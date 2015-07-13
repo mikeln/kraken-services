@@ -1,0 +1,8 @@
+source 'https://rubygems.org'
+ruby '2.2.2'
+
+gem 'rake', '~> 10.4.2'
+gem 'dashing', '~> 1.3.4'
+gem 'dashing-contrib', '~> 0.1.14'
+gem 'kubeclient', :git => 'https://github.com/abonas/kubeclient.git'
+

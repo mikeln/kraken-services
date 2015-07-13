@@ -1,0 +1,4 @@
+---
+kubernetes: |+
+  data: {"name":"kraken cluster","color":"#FFFFFF","children":[{"name":"172.16.1.103","host":"172.16.1.103","friendly_name":"node-01","color":"#fd8a02","children":[{"name":"kube-dns-v3-5dkwf","friendly_name":"kube-dns","host":"172.16.1.103","color":"#02fdd3"},{"name":"kube-dns-v3-t6qta","friendly_name":"kube-dns","host":"172.16.1.103","color":"#02fdd3"}]},{"name":"172.16.1.104","host":"172.16.1.104","friendly_name":"node-02","color":"#4102fd","children":[{"name":"grafana-v1-g6pgk","friendly_name":"Grafana","host":"172.16.1.104","color":"#024bfd"},{"name":"heapster-v1-nvrha","friendly_name":"heapster","host":"172.16.1.104","color":"#94fd02"},{"name":"influxdb-v1-3swum","friendly_name":"InfluxDB","host":"172.16.1.104","color":"#fd02de"},{"name":"kube-dns-v3-mxktl","friendly_name":"kube-dns","host":"172.16.1.104","color":"#02fdd3"}]}],"id":"kubernetes","updatedAt":1436767779}
+
