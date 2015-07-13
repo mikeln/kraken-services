@@ -10,9 +10,9 @@ Kubernetes API v1 (will not work with v1beta3)
 ### local cluster:
 ```sh
 kraken local up
-kubectl --cluster=local create -f common -f local
+kubectl --cluster=local create -f kubernetes
 ```
-Then wait for the pods to exit Pending state and open http://172.16.1.103:4567 in your browser
+Then wait for the pods to exit Pending state and open http://172.16.1.103:30977 in your browser
 ### aws cluster
 
 First make sure your aws settings.yaml has the elastic load balancer configured correctly:
@@ -36,7 +36,7 @@ elb:
 then:
 ```sh
 kraken aws up
-kubectl --cluster=aws create -f common -f aws
+kubectl --cluster=aws create -f kubernetes
 ```
 
 Then wait for the pods to exit Pending state and open http://something.kubeme.io:8080 in your browser

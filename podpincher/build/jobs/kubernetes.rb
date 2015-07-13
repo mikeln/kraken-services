@@ -5,7 +5,7 @@ class EventProcessor
   def initialize
     
     ssl_options = { verify_ssl: OpenSSL::SSL::VERIFY_NONE }
-    @client = Kubeclient::Client.new 'https://kubernetes:443/api/', ENV['KUBERNETES_API_VER'], ssl_options: ssl_options
+    @client = Kubeclient::Client.new ENV.fetch('KUBERNETES_API_URL', 'https://kubernetes:443/api/'), ENV.fetch('KUBERNETES_API_VER', 'v1'), ssl_options: ssl_options
     
     @colors = {}
     @golden_ratio_conjugate = 0.618033988749895

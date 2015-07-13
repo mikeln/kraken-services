@@ -21,6 +21,8 @@ spec:
         env:
         - name: KUBERNETES_API_VER
           value: v1
+        - name: KUBERNETES_API_URL
+          value: https://kubernetes:443/api/
         ports:
         - containerPort: 4567
           hostPort: 4567
