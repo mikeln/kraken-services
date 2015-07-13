@@ -1,12 +1,12 @@
-apiVersion: v1beta3
+apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: heapster-v1
-  namespace: default
   labels:
     k8s-app: heapster
-    version: v1
     kubernetes.io/cluster-service: "true"
+    version: v1
+  name: heapster-v1
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -16,28 +16,26 @@ spec:
     metadata:
       labels:
         k8s-app: heapster
-        version: v1
         kubernetes.io/cluster-service: "true"
+        version: v1
     spec:
       containers:
-        - image: gcr.io/google_containers/heapster:v0.14.2
-          name: heapster
-          command:
-            - /heapster
-            - --source=kubernetes:http://kubernetes-ro?auth=
-            - --sink=influxdb:http://influxdb:8086
-          volumeMounts:
-            - name: ssl-certs
-              mountPath: /etc/ssl/certs
-              readOnly: true
-            # - name: monitoring-token
-            #  mountPath: /etc/kubernetes/kubeconfig
-            #  readOnly: true
-
+      - command:
+        - /heapster
+        - --source=kubernetes:https://kubernetes?apiVersion=v1&insecure=true&inClusterConfig=false
+        - --sink=influxdb:http://influxdb:8086?avoidColumns=true
+        - --poll_duration=10s
+        - --stats_resolution=5s
+        image: gcr.io/google_containers/heapster:v0.15.0
+        imagePullPolicy: IfNotPresent
+        name: heapster
+        volumeMounts:
+        - mountPath: /etc/ssl/certs
+          name: ssl-certs
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
       volumes:
-        - name: ssl-certs
-          hostPath:
-            path: /etc/ssl/certs
-        # - name: monitoring-token
-        #  secret:
-        #    secretName: token-system-monitoring
+      - hostPath:
+          path: /etc/ssl/certs
+        name: ssl-certs

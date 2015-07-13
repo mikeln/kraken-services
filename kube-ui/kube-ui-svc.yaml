@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: kube-ui
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "KubeUI"
+  name: kube-ui
+  namespace: default
+spec:
+  deprecatedPublicIPS:
+  - $KUBE_UI_PUBLIC_IP
+  selector:
+    k8s-app: kube-ui
+  ports:
+  - port: 8003
+    protocol: TCP
+    targetPort: 8080

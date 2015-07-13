@@ -15,6 +15,14 @@ Create benchmark controllers and services:
 
 Now you can go the http://172.16.1.103:8089/ and run a test.
 
+## NUC cluster
+
+Fire up NUC cluster
+
+Create benchmark controllers and services:
+
+    kubectl create --cluster=nuc -f nuc
+
 ## aws cluster
 
 Adjust number of nodes in your aws settings.yaml
