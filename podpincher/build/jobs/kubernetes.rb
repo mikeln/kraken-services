@@ -95,21 +95,21 @@ class EventProcessor
     
     kube_data = {
       :name => 'kraken cluster',
-      :color => "#FFFFFF",
+      :color => '#FFFFFF',
       :children => []
     }
 
     hosts.each do |name, host_data|
 
       # add a color
-      @colors[host_data[:name]] = get_random_color if @colors[host_data[:name]].nil?
+      # @colors[host_data[:name]] = get_random_color if @colors[host_data[:name]].nil?
 
       kube_data[:children].push(
         {
           :name => host_data[:name],
           :host => host_data[:name],
           :friendly_name => host_data[:friendly_name],
-          :color => @colors[host_data[:name]],
+          :color => '#C0C0C0',
           :children => pods[host_data[:name]]
         }
       ) 
