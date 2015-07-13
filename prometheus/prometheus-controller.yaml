@@ -42,7 +42,7 @@ spec:
           value: localhost
         - name: PROMETHEUS_SERVICE_PORT
           value: '9090'
-        image: quay.io/spiffxp/kube-prometheus:latest
+        image: quay.io/spiffxp/prometheus:latest
         imagePullPolicy: Always
         name: prometheus
         ports:

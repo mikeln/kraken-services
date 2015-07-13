@@ -19,7 +19,7 @@
 # arguments and environment variables and starts the Prometheus server.
 #
 # Sample usage (to be run inside Kubernetes-created docker container).
-#  ./run_prometheus -t KUBERNETES_RO -d /tmp/prometheus
+#  ./run.sh -t KUBERNETES_RO -d /tmp/prometheus
 #
 
 show_usage() {
