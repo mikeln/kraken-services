@@ -39,23 +39,28 @@ global:
 scrape_configs:
 EOS
   local target
+  local target_address
 
   ### Allow prometheus to scrape multiple targets
   ### i.e. -t KUBERNETES_RO,MY_METRICS_ABC
   for target in ${1//,/ }; do
-    local host_variable="${target}_SERVICE_HOST"
-    local port_variable="${target}_SERVICE_PORT"
-    local host=$(eval echo '$'$host_variable)
-    local port=$(eval echo '$'$port_variable)
-    if [ -z ${host} ]; then
-      >&2 echo "No env variable for ${host_variable}."
-      exit 3
+    local target_address_variable="${target}_TARGET_ADDRESS"
+    target_address=$(eval echo '$'$target_address_variable)
+    if [ -z "${target_address}" ]; then
+      local host_variable="${target}_SERVICE_HOST"
+      local port_variable="${target}_SERVICE_PORT"
+      local host=$(eval echo '$'$host_variable)
+      local port=$(eval echo '$'$port_variable)
+      if [ -z ${host} ]; then
+        >&2 echo "No env variable for ${host_variable}."
+        exit 3
+      fi
+      if [ -z ${port} ]; then
+        >&2 echo "No env variable for ${port_variable}."
+        exit 3
+      fi
+      target_address="${host}:${port}"
     fi
-    if [ -z ${port} ]; then
-      >&2 echo "No env variable for ${port_variable}."
-      exit 3
-    fi
-    local target_address="${host}:${port}"
     cat <<EOS
 - job_name: '${target}'
   target_groups:

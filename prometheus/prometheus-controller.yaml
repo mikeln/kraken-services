@@ -34,14 +34,10 @@ spec:
         - -d
         - /var/prometheus
         env:
-        - name: KUBERNETES_RO_SERVICE_HOST
-          value: localhost
-        - name: KUBERNETES_RO_SERVICE_PORT
-          value: '8001'
-        - name: PROMETHEUS_SERVICE_HOST
-          value: localhost
-        - name: PROMETHEUS_SERVICE_PORT
-          value: '9090'
+        - name: KUBERNETES_RO_TARGET_ADDRESS
+          value: localhost:8001
+        - name: PROMETHEUS_TARGET_ADDRESS
+          value: localhost:9090
         image: quay.io/spiffxp/prometheus:latest
         imagePullPolicy: Always
         name: prometheus
