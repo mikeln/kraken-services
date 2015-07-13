@@ -21,17 +21,30 @@ spec:
     spec:
       containers:
         - name: etcd
-          image: quay.io/coreos/etcd:v2.0.9
-          # command: "/etcd"
-          args:
+          resources:
+            limits:
+              cpu: 100m
+              memory: 50Mi
+          image: gcr.io/google_containers/etcd:2.0.9
+          command:
+            - /usr/local/bin/etcd
+            - -data-dir
+            - /var/etcd/data
             - -listen-client-urls
             - http://127.0.0.1:2379,http://127.0.0.1:4001
             - -advertise-client-urls
             - http://127.0.0.1:2379,http://127.0.0.1:4001
             - -initial-cluster-token
             - skydns-etcd
+          volumeMounts:
+            - name: etcd-storage
+              mountPath: /var/etcd/data
         - name: kube2sky
-          image: gcr.io/google_containers/kube2sky:1.9
+          resources:
+            limits:
+              cpu: 100m
+              memory: 50Mi
+          image: gcr.io/google_containers/kube2sky:1.11
           # command: "/kube2sky"
           args:
             - -domain=$CLUSTER_DOMAIN
@@ -42,6 +55,10 @@ spec:
             # name: dns-token
             # readOnly: true
         - name: skydns
+          resources:
+            limits:
+              cpu: 100m
+              memory: 50Mi
           image: gcr.io/google_containers/skydns:2015-03-11-001
           # command: "/skydns"
           args:
@@ -56,15 +73,25 @@ spec:
               name: dns-tcp
               protocol: TCP
           livenessProbe:
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - nslookup kubernetes.default.$CLUSTER_DOMAIN localhost >/dev/null
+            httpGet:
+              path: /healthz
+              port: 8080
+              scheme: HTTP
             initialDelaySeconds: 30
             timeoutSeconds: 5
+        - name: healthz
+          image: gcr.io/google_containers/exechealthz:1.0
+          resources:
+            limits:
+              cpu: 10m
+              memory: 20Mi
+          args:
+            - -cmd=nslookup kubernetes.default.svc.$CLUSTER_DOMAIN localhost >/dev/null
+            - -port=8080
+          ports:
+            - containerPort: 8080
+              protocol: TCP
       dnsPolicy: Default  # Don't use cluster DNS.
-      # volumes:
-      # - name: dns-token
-        # secret:
-          # secretName: token-system-dns
+      volumes:
+        - name: etcd-storage
+          emptyDir: {}
