@@ -8,14 +8,12 @@ metadata:
   name: heapster
   namespace: default
 spec:
-  deprecatedPublicIPs:
-  - $HEAPSTER_PUBLIC_IP
   ports:
-  - nodePort: 0
+  - nodePort: 30310
     port: 8082
     protocol: TCP
     targetPort: 8082
   selector:
     k8s-app: Heapster
   sessionAffinity: None
-  type: ClusterIP
+  type: NodePort

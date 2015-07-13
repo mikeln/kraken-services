@@ -22,13 +22,19 @@ spec:
       containers:
       - command:
         - /heapster
+        - --listen_ip=0.0.0.0
+        - --port=8082
         - --source=kubernetes:https://kubernetes?apiVersion=v1&insecure=true&inClusterConfig=false
         - --sink=influxdb:http://influxdb:8086?avoidColumns=true
         - --poll_duration=10s
         - --stats_resolution=5s
-        image: gcr.io/google_containers/heapster:v0.15.0
+        image: gcr.io/google_containers/heapster:v0.16.0
         imagePullPolicy: IfNotPresent
         name: heapster
+        ports:
+        - containerPort: 8082
+          hostPort: 8082
+          protocol: TCP
         volumeMounts:
         - mountPath: /etc/ssl/certs
           name: ssl-certs

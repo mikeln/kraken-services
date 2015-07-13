@@ -8,20 +8,18 @@ metadata:
   name: influxdb
   namespace: default
 spec:
-  deprecatedPublicIPs:
-  - $INFLUXDB_PUBLIC_IP
   ports:
   - name: http
-    nodePort: 0
+    nodePort: 30321
     port: 8083
     protocol: TCP
     targetPort: 8083
   - name: api
-    nodePort: 0
+    nodePort: 30322
     port: 8086
     protocol: TCP
     targetPort: 8086
   selector:
     k8s-app: InfluxDB
   sessionAffinity: None
-  type: ClusterIP
+  type: NodePort
