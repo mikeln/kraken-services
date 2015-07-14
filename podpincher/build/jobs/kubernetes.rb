@@ -29,10 +29,10 @@ class EventProcessor
     [(r*256).to_i, (g*256).to_i, (b*256).to_i]
   end
 
-  def get_random_color
+  def get_random_color(host = false)
     @h += @golden_ratio_conjugate
     @h %= 1
-    color = hsv_to_rgb(@h, 0.99, 0.99)
+    color = hsv_to_rgb(@h, host ? 0.1 : 0.99, 0.99)
 
     color_as_hex = "#"
     color.each do |component|
@@ -102,14 +102,14 @@ class EventProcessor
     hosts.each do |name, host_data|
 
       # add a color
-      # @colors[host_data[:name]] = get_random_color if @colors[host_data[:name]].nil?
+      @colors[host_data[:name]] = get_random_color(true) if @colors[host_data[:name]].nil?
 
       kube_data[:children].push(
         {
           :name => host_data[:name],
           :host => host_data[:name],
           :friendly_name => host_data[:friendly_name],
-          :color => '#C0C0C0',
+          :color => @colors[host_data[:name]],
           :children => pods[host_data[:name]]
         }
       ) 
