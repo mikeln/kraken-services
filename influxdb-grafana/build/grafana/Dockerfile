@@ -4,7 +4,7 @@ ENTRYPOINT ["/kuisp"]
 CMD ["-p", "8080", "-c", "/opt/grafana/config.js.tmpl=/opt/grafana/config.js", "-s", "/db/=${INFLUXDB_PROTO}://${INFLUXDB_HOST}:${INFLUXDB_PORT}/db/"]
 EXPOSE 8080
 
-ENV KUISP_VERSION 0.3
+ENV KUISP_VERSION 0.11
 
 ENV GRAFANA_VERSION 1.9.1
 ENV INFLUXDB_NAME k8s
