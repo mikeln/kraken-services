@@ -8,23 +8,23 @@ metadata:
   name: load-generator-master
   namespace: default
 spec:
-  deprecatedPublicIPs:
-  - 172.16.16.16
   ports:
-  - name: locust-http
-    nodePort: 0
+  - name: http
+    nodePort: 30341
     port: 8089
     protocol: TCP
     targetPort: 8089
-  - name: locust-slavecomm
-    nodePort: 0
+  - name: slavecomm
+    nodePort: 30342
     port: 5557
     protocol: TCP
     targetPort: 5557
-  - name: locust-slavecomm2
-    nodePort: 0
+  - name: slavecomm2
+    nodePort: 30343
     port: 5558
     protocol: TCP
     targetPort: 5558
   selector:
     name: load-generator-master
+  sessionAffinity: None
+  type: NodePort

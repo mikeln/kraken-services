@@ -11,9 +11,9 @@ Fire up local kraken cluster (you'll need to clone kraken repo)
 
 Create benchmark controllers and services:
 
-    kubectl create --cluster=local -f common -f local
+    kubectl create --cluster=local -f other
 
-Now you can go the http://172.16.1.103:8089/ and run a test.
+Now you can go the http://172.16.1.103:30340/ and run a test.
 
 ## NUC cluster
 
@@ -22,6 +22,8 @@ Fire up NUC cluster
 Create benchmark controllers and services:
 
     kubectl create --cluster=nuc -f nuc
+
+Now you can go the http://a node ip:30340/ and run a test.
 
 ## aws cluster
 
@@ -54,7 +56,7 @@ Fire up aws kraken cluster (you'll need to clone kraken repo)
 
 Create benchmark controllers and services:
 
-    kubectl create --cluster=aws -f common -f aws
+    kubectl create --cluster=aws -f other
     
 After all pods become ready, Locust load generator UI will be usable. Now you can go the http://your_nickname.kubeme.io and run a test.
 
