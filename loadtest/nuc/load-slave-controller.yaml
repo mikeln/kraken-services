@@ -33,7 +33,7 @@ spec:
           value: root
         - name: INFLUXDB_NAME
           value: k8s
-        image: 172.16.16.15:5000/trogdor-load-generator:nuc
+        image: 172.16.16.15:5000/trogdor-load-generator:latest
         imagePullPolicy: IfNotPresent
         name: load-generator-slave
       dnsPolicy: ClusterFirst

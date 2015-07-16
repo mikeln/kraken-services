@@ -8,7 +8,7 @@ metadata:
 spec:
   ports:
   - name: podpincher
-    nodePort: 30390
+    nodePort: 30977
     port: 4567
     protocol: TCP
     targetPort: 4567

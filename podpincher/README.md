@@ -10,7 +10,7 @@ Kubernetes API v1 (will not work with v1beta3)
 ### local cluster:
 ```sh
 kraken local up
-kubectl --cluster=local create -f kubernetes
+kubectl --cluster=local create -f other
 ```
 Then wait for the pods to exit Pending state and open http://172.16.1.103:30977 in your browser
 ### aws cluster
@@ -36,7 +36,14 @@ elb:
 then:
 ```sh
 kraken aws up
-kubectl --cluster=aws create -f kubernetes
+kubectl --cluster=aws create -f other
 ```
 
 Then wait for the pods to exit Pending state and open http://something.kubeme.io:8080 in your browser
+
+### nuc cluster:
+```sh
+kraken local up
+kubectl --cluster=nuc create -f other
+```
+Then wait for the pods to exit Pending state and open http://ip of a node:30977 in your browser
