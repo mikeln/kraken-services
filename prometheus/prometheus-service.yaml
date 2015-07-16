@@ -8,12 +8,12 @@ metadata:
 spec:
   ports:
   - name: prometheus
-    nodePort: 30090
+    nodePort: 30360
     port: 9090
     protocol: TCP
     targetPort: 9090
   - name: promdash
-    nodePort: 30091
+    nodePort: 30361
     port: 3000
     protocol: TCP
     targetPort: 3000

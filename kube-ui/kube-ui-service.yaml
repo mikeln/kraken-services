@@ -8,11 +8,13 @@ metadata:
   name: kube-ui
   namespace: default
 spec:
-  deprecatedPublicIPS:
-  - $KUBE_UI_PUBLIC_IP
   selector:
     k8s-app: kube-ui
   ports:
-  - port: 8003
+  - name: http
+    nodePort: 30330
+    port: 8003
     protocol: TCP
     targetPort: 8080
+  sessionAffinity: None
+  type: NodePort

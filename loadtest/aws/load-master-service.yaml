@@ -9,18 +9,18 @@ metadata:
   namespace: default
 spec:
   ports:
-  - name: locust-http
-    nodePort: 30061
+  - name: http
+    nodePort: 30340
     port: 8089
     protocol: TCP
     targetPort: 8089
-  - name: locust-slavecomm
-    nodePort: 30082
+  - name: slavecomm
+    nodePort: 30341
     port: 5557
     protocol: TCP
     targetPort: 5557
-  - name: locust-slavecomm2
-    nodePort: 30967
+  - name: slavecomm2
+    nodePort: 30342
     port: 5558
     protocol: TCP
     targetPort: 5558
