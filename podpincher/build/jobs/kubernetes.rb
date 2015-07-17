@@ -50,11 +50,15 @@ class EventProcessor
   def getHosts
     hosts = {}
     @client.get_nodes.each { |node| 
-      hosts[node[:metadata]['name']] = {
-        :name => node[:metadata]['name'],
-        :friendly_name => node[:metadata]['labels']['kraken-node'],
-        :host => node[:metadata]['name']
-      } 
+      host_status = node[:status]['conditions'].select {|condition| condition['type'] == 'Ready' }
+
+      if host_status[0]['status'] == 'True'
+        hosts[node[:metadata]['name']] = {
+          :name => node[:metadata]['name'],
+          :friendly_name => node[:metadata]['labels']['kraken-node'],
+          :host => node[:metadata]['name']
+        } 
+      end
     }
 
     hosts
