@@ -33,7 +33,7 @@ spec:
         - name: INFLUXDB_NAME
           value: k8s
         image: 172.16.16.15:5000/trogdor-load-generator:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         name: load-generator-master
         ports:
         - containerPort: 8089
