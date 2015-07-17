@@ -34,3 +34,5 @@ spec:
         name: grafana
       dnsPolicy: ClusterFirst
       restartPolicy: Always
+      nodeSelector:
+        region: zone1

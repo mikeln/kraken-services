@@ -30,4 +30,4 @@ spec:
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       nodeSelector:
-        region: zone1
+        region: zone2
