@@ -61,6 +61,8 @@ spec:
         imagePullPolicy: IfNotPresent
         name: kubectl-proxy
       dnsPolicy: ClusterFirst
+      nodeSelector:
+        region: zone1
       restartPolicy: Always
       volumes:
       - hostPath:

@@ -28,3 +28,7 @@ spec:
             memory: 50Mi
         ports:
         - containerPort: 8080
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        region: zone2
+      restartPolicy: Always

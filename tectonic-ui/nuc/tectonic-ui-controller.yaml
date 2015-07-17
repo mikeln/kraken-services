@@ -25,3 +25,5 @@ spec:
             - /opt/bridge/bin/bridge 
             - --k8s-endpoint=https://kubernetes
             - --public-dir=/opt/bridge/static
+      nodeSelector:
+        region: zone2

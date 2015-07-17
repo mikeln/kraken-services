@@ -41,6 +41,8 @@ spec:
           readOnly: true
       dnsPolicy: ClusterFirst
       restartPolicy: Always
+      nodeSelector:
+        region: zone2
       volumes:
       - hostPath:
           path: /etc/ssl/certs
