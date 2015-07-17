@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ReplicationController
 metadata:
   labels:
-    name: PodPincher
+    name: podpincher
   name: podpincher
   namespace: default
 spec:
