@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - image: 172.16.16.15:5000/podpincher:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         name: podpincher
         env:
         - name: KUBERNETES_API_VER
