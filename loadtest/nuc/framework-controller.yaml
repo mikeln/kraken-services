@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - image: 172.16.16.15:5000/trogdor-framework:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         name: framework
         ports:
         - containerPort: 9080
