@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: kube-ui
-        image: 172.16.16.15:5050/kube-ui:v1.1
+        image: 172.16.16.15:5000/kube-ui:v1.1
         resources:
           limits:
             cpu: 100m

@@ -25,7 +25,7 @@ spec:
           value: root
         - name: PRE_CREATE_DB
           value: k8s;grafana
-        image: 172.16.16.15:5050/influxdb:latest
+        image: 172.16.16.15:5000/influxdb:latest
         imagePullPolicy: Always
         name: influxdb
         ports:

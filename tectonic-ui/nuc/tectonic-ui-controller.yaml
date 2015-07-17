@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: tectonic-ui
-          image: 172.16.16.15:5050/tectonic-ui:latest
+          image: 172.16.16.15:5000/tectonic-ui:latest
           ports:
             - containerPort: 9000
               hostPort: 9000

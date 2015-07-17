@@ -28,7 +28,7 @@ spec:
         - --sink=influxdb:http://influxdb:8086?avoidColumns=true
         - --poll_duration=10s
         - --stats_resolution=5s
-        image: 172.16.16.15:5050/heapster:v0.16.0
+        image: 172.16.16.15:5000/heapster:v0.16.0
         imagePullPolicy: IfNotPresent
         name: heapster
         ports:

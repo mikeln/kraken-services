@@ -18,7 +18,7 @@ spec:
       - env:
         - name: DATABASE_URL
           value: sqlite3:/promdash/file.sqlite3
-        image: 172.16.16.15:5050/promdash:latest
+        image: 172.16.16.15:5000/promdash:latest
         imagePullPolicy: IfNotPresent
         name: promdash
         ports:
@@ -38,7 +38,7 @@ spec:
           value: localhost:9090
         - name: KUBE_APISERVER_TARGET_ADDRESS
           value: localhost:8001
-        image: 172.16.16.15:5050/prometheus:latest
+        image: 172.16.16.15:5000/prometheus:latest
         imagePullPolicy: Always
         name: prometheus
         ports:
@@ -57,7 +57,7 @@ spec:
         - --api-version=v1
         - --logtostderr=true
         - --v=2
-        image: 172.16.16.15:5050/kubectl:v0.18.0-350-gfb3305edcf6c1a
+        image: 172.16.16.15:5000/kubectl:v0.18.0-350-gfb3305edcf6c1a
         imagePullPolicy: IfNotPresent
         name: kubectl-proxy
       dnsPolicy: ClusterFirst

@@ -29,7 +29,7 @@ spec:
           value: influxdb
         - name: INFLUXDB_PORT
           value: "8086"
-        image: 172.16.16.15:5050/grafana:latest
+        image: 172.16.16.15:5000/grafana:latest
         imagePullPolicy: Always
         name: grafana
       dnsPolicy: ClusterFirst
