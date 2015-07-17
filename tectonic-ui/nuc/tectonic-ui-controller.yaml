@@ -25,5 +25,3 @@ spec:
             - /opt/bridge/bin/bridge 
             - --k8s-endpoint=https://kubernetes
             - --public-dir=/opt/bridge/static
-      imagePullSecrets:
-        - name: tectonic-ui-dockercfg
