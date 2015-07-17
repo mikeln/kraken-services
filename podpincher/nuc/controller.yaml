@@ -29,5 +29,5 @@ spec:
           protocol: TCP
       dnsPolicy: ClusterFirst
       restartPolicy: Always
-    nodeSelector:
-      region: zone1
+      nodeSelector:
+        region: zone1
