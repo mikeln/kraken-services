@@ -12,6 +12,7 @@ spec:
   template:
     metadata:
       labels:
+        kubernetes.io/color: 33FFFF
         name: tectonic-ui
     spec:
       containers:

@@ -16,6 +16,7 @@ spec:
     metadata:
       labels:
         k8s-app: heapster
+        kubernetes.io/color: FFB266
         kubernetes.io/cluster-service: "true"
         version: v1
     spec:

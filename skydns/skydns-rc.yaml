@@ -17,6 +17,7 @@ spec:
       labels:
         k8s-app: kube-dns
         version: v3
+        kubernetes.io/color: FFFF66
         kubernetes.io/cluster-service: "true"
     spec:
       containers:

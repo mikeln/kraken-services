@@ -16,6 +16,7 @@ spec:
     metadata:
       labels:
         k8s-app: kube-ui
+        kubernetes.io/color: 009999
         version: v1
         kubernetes.io/cluster-service: "true"
     spec:
