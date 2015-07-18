@@ -16,6 +16,7 @@ spec:
     metadata:
       labels:
         k8s-app: Grafana
+        kubernetes.io/color: 99CCFF
         kubernetes.io/cluster-service: "true"
         version: v1
     spec:

@@ -16,6 +16,7 @@ spec:
     metadata:
       labels:
         k8s-app: InfluxDB
+        kubernetes.io/color: 6666FF
         kubernetes.io/cluster-service: "true"
         version: v1
     spec:

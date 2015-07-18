@@ -44,7 +44,24 @@ class EventProcessor
       end
     end
 
-    color_as_hex
+    if @colors.select{|key, val| val == color_as_hex }.length != 0
+      get_random_color(host)
+    else
+      color_as_hex
+    end
+  end
+
+  def set_color(metadata, host = false)
+
+    color_key = metadata['labels']['kubernetes.io/name']
+    color_key = metadata['labels']['k8s-app'] if color_key.nil?
+    color_key = metadata['labels']['name'] if color_key.nil?
+    color_key = metadata['name'] if color_key.nil?
+    
+    color = metadata['labels']['kubernetes.io/color'].nil? ? get_random_color(host) : "##{metadata['labels']['kubernetes.io/color']}"
+    @colors[color_key] = color if @colors[color_key].nil?
+
+    color_key
   end
 
   def getHosts
@@ -53,10 +70,14 @@ class EventProcessor
       host_status = node[:status]['conditions'].select {|condition| condition['type'] == 'Ready' }
 
       if host_status[0]['status'] == 'True'
+        # add a color
+        color_key = set_color(node[:metadata], true)
+
         hosts[node[:metadata]['name']] = {
           :name => node[:metadata]['name'],
           :friendly_name => node[:metadata]['labels']['kraken-node'],
-          :host => node[:metadata]['name']
+          :host => node[:metadata]['name'],
+          :color => @colors[color_key]
         } 
       end
     }
@@ -74,19 +95,16 @@ class EventProcessor
       friendly_name = pod[:metadata]['labels']['k8s-app'] if friendly_name.nil?
       friendly_name = pod[:metadata]['labels']['name'] if friendly_name.nil?
       
-      # add a color
-      if friendly_name.nil?
-        @colors[pod[:metadata]['name']] = get_random_color if @colors[pod[:metadata]['name']].nil?
-      else
-        @colors[friendly_name] = get_random_color if @colors[friendly_name].nil?
-      end
+      # setup color for this pod type
+      color_key = set_color(pod[:metadata])
+
       # add the item
       pods[pod[:spec]['nodeName']].push(
         {
           :name => pod[:metadata]['name'],
           :friendly_name => friendly_name,
           :host => pod[:spec]['nodeName'],
-          :color => friendly_name.nil? ? @colors[pod[:metadata]['name']] : @colors[friendly_name]
+          :color => @colors[color_key]
         }
       )
 
@@ -105,15 +123,12 @@ class EventProcessor
 
     hosts.each do |name, host_data|
 
-      # add a color
-      @colors[host_data[:name]] = get_random_color(true) if @colors[host_data[:name]].nil?
-
       kube_data[:children].push(
         {
           :name => host_data[:name],
           :host => host_data[:name],
           :friendly_name => host_data[:friendly_name],
-          :color => @colors[host_data[:name]],
+          :color => host_data[:color],
           :children => pods[host_data[:name]]
         }
       ) 
