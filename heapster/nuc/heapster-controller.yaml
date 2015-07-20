@@ -16,7 +16,6 @@ spec:
     metadata:
       labels:
         k8s-app: heapster
-        kubernetes.io/color: FFB266
         kubernetes.io/cluster-service: "true"
         version: v1
     spec:
@@ -29,7 +28,7 @@ spec:
         - --sink=influxdb:http://influxdb:8086?avoidColumns=true
         - --poll_duration=10s
         - --stats_resolution=5s
-        image: gcr.io/google_containers/heapster:v0.16.0
+        image: 172.16.16.15:5000/heapster:v0.16.0
         imagePullPolicy: IfNotPresent
         name: heapster
         ports:
@@ -42,6 +41,8 @@ spec:
           readOnly: true
       dnsPolicy: ClusterFirst
       restartPolicy: Always
+      nodeSelector:
+        region: zone2
       volumes:
       - hostPath:
           path: /etc/ssl/certs

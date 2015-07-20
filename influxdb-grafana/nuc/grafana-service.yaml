@@ -2,17 +2,17 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    k8s-app: kube-ui
     kubernetes.io/cluster-service: "true"
-    kubernetes.io/name: "KubeUI"
-  name: kube-ui
+    kubernetes.io/name: Grafana
+  name: grafana
   namespace: default
 spec:
-  deprecatedPublicIPS:
-  - $KUBE_UI_PUBLIC_IP
-  selector:
-    k8s-app: kube-ui
   ports:
-  - port: 8003
+  - nodePort: 30320
+    port: 8002
     protocol: TCP
     targetPort: 8080
+  selector:
+    k8s-app: Grafana
+  sessionAffinity: None
+  type: NodePort

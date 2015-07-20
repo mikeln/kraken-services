@@ -2,25 +2,25 @@ apiVersion: v1
 kind: ReplicationController
 metadata:
   labels:
-    name: load-generator-slave
-  name: load-generator-slave
+    name: load-generator-master
+  name: load-generator-master
   namespace: default
 spec:
-  replicas: 5
+  replicas: 1
   selector:
-    name: load-generator-slave
+    name: load-generator-master
   template:
     metadata:
       labels:
-        name: load-generator-slave
+        kubernetes.io/color: FF0000
+        name: load-generator-master
     spec:
       containers:
       - command:
         - locust
         - -f
         - /scripts/locustfile.py
-        - --slave
-        - --master-host=load-generator-master
+        - --master
         - --host=http://framework:9080
         env:
         - name: INFLUXDB_HOST
@@ -35,6 +35,13 @@ spec:
           value: k8s
         image: quay.io/samsung_ag/trogdor-load-generator:latest
         imagePullPolicy: Always
-        name: load-generator-slave
+        name: load-generator-master
+        ports:
+        - containerPort: 8089
+          protocol: TCP
+        - containerPort: 5557
+          protocol: TCP
+        - containerPort: 5558
+          protocol: TCP
       dnsPolicy: ClusterFirst
       restartPolicy: Always

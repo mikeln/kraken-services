@@ -12,6 +12,7 @@ spec:
   template:
     metadata:
       labels:
+        kubernetes.io/color: FF0000
         name: load-generator-master
     spec:
       containers:
@@ -32,8 +33,8 @@ spec:
           value: root
         - name: INFLUXDB_NAME
           value: k8s
-        image: 172.16.16.15:5000/trogdor-load-generator:nuc
-        imagePullPolicy: IfNotPresent
+        image: 172.16.16.15:5000/trogdor-load-generator:latest
+        imagePullPolicy: Always
         name: load-generator-master
         ports:
         - containerPort: 8089

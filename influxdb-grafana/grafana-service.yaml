@@ -7,14 +7,12 @@ metadata:
   name: grafana
   namespace: default
 spec:
-  deprecatedPublicIPs:
-  - $GRAFANA_PUBLIC_IP
   ports:
-  - nodePort: 0
+  - nodePort: 30320
     port: 8002
     protocol: TCP
     targetPort: 8080
   selector:
     k8s-app: Grafana
   sessionAffinity: None
-  type: ClusterIP
+  type: NodePort

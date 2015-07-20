@@ -12,6 +12,7 @@ spec:
   template:
     metadata:
       labels:
+        kubernetes.io/color: 0080FF
         name: load-generator-slave
     spec:
       containers:
@@ -33,8 +34,8 @@ spec:
           value: root
         - name: INFLUXDB_NAME
           value: k8s
-        image: 172.16.16.15:5000/trogdor-load-generator:nuc
-        imagePullPolicy: IfNotPresent
+        image: 172.16.16.15:5000/trogdor-load-generator:latest
+        imagePullPolicy: Always
         name: load-generator-slave
       dnsPolicy: ClusterFirst
       restartPolicy: Always

@@ -17,7 +17,6 @@ spec:
       labels:
         k8s-app: kube-dns
         version: v3
-        kubernetes.io/color: FFFF66
         kubernetes.io/cluster-service: "true"
     spec:
       containers:
@@ -26,7 +25,7 @@ spec:
             limits:
               cpu: 100m
               memory: 50Mi
-          image: gcr.io/google_containers/etcd:2.0.9
+          image: 172.16.16.15:5000/etcd:2.0.9
           command:
             - /usr/local/bin/etcd
             - -data-dir
@@ -45,7 +44,7 @@ spec:
             limits:
               cpu: 100m
               memory: 50Mi
-          image: gcr.io/google_containers/kube2sky:1.11
+          image: 172.16.16.15:5000/kube2sky:1.11
           # command: "/kube2sky"
           args:
             - -domain=$CLUSTER_DOMAIN
@@ -60,7 +59,7 @@ spec:
             limits:
               cpu: 100m
               memory: 50Mi
-          image: gcr.io/google_containers/skydns:2015-03-11-001
+          image: 172.16.16.15:5000/skydns:2015-03-11-001
           # command: "/skydns"
           args:
             - -machines=http://localhost:4001
@@ -81,7 +80,7 @@ spec:
             initialDelaySeconds: 30
             timeoutSeconds: 5
         - name: healthz
-          image: gcr.io/google_containers/exechealthz:1.0
+          image: 172.16.16.15:5000/exechealthz:1.0
           resources:
             limits:
               cpu: 10m

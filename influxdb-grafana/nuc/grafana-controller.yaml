@@ -16,7 +16,6 @@ spec:
     metadata:
       labels:
         k8s-app: Grafana
-        kubernetes.io/color: 99CCFF
         kubernetes.io/cluster-service: "true"
         version: v1
     spec:
@@ -25,13 +24,15 @@ spec:
         - name: GRAFANA_DEFAULT_DASHBOARD
           value: /dashboard/file/kraken.json
         - name: INFLUXDB_EXTERNAL_URL
-          value: http://$INFLUXDB_EXTERNAL_HOST:30322/db/
+          value: http://172.16.16.16:30322/db/
         - name: INFLUXDB_HOST
           value: influxdb
         - name: INFLUXDB_PORT
           value: "8086"
-        image: quay.io/samsung_ag/grafana:latest
+        image: 172.16.16.15:5000/grafana:latest
         imagePullPolicy: Always
         name: grafana
       dnsPolicy: ClusterFirst
       restartPolicy: Always
+      nodeSelector:
+        region: zone1

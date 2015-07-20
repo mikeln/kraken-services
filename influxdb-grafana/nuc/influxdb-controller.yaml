@@ -16,7 +16,6 @@ spec:
     metadata:
       labels:
         k8s-app: InfluxDB
-        kubernetes.io/color: 6666FF
         kubernetes.io/cluster-service: "true"
         version: v1
     spec:
@@ -26,7 +25,7 @@ spec:
           value: root
         - name: PRE_CREATE_DB
           value: k8s;grafana
-        image: quay.io/samsung_ag/influxdb:latest
+        image: 172.16.16.15:5000/influxdb:latest
         imagePullPolicy: Always
         name: influxdb
         ports:
@@ -38,5 +37,5 @@ spec:
           protocol: TCP
       dnsPolicy: ClusterFirst
       nodeSelector:
-        kraken-node: node-01
+        region: zone1
       restartPolicy: Always
