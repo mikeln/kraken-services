@@ -68,6 +68,5 @@ spec:
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       volumes:
-      - hostPath:
-          path: /mnt/promdash
-        name: data
+      - name: data 
+        emptyDir: {}
