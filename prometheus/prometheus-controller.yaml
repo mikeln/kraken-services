@@ -34,6 +34,7 @@ spec:
         - PROMETHEUS,KUBE_APISERVER,KUBE_CONTROLLER,KUBE_SCHEDULER
         - -d
         - /var/prometheus
+        - -K
         env:
         - name: PROMETHEUS_TARGET_ADDRESS
           value: localhost:9090

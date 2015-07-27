@@ -2,6 +2,9 @@
 
 require 'optparse'
 require 'yaml'
+require 'net/http'
+require 'uri'
+require 'json'
 
 options = {}
 @parser = OptionParser.new do |opts|
@@ -11,6 +14,9 @@ options = {}
   end
   opts.on(:REQUIRED, "-dDIRECTORY", "--directory DIRECTORY", "directory") do |d|
     options[:directory] = d
+  end
+  opts.on("-K", "--[no-]kubelet-discover", "Enable kubelet discovery") do |v|
+    options[:kubelet] = v
   end
   opts.on_tail("-h", "--help", "Show this message") do
     puts opts
@@ -28,8 +34,8 @@ if options[:directory].nil? || options[:targets].nil?
   print_usage
 end
 
-def build_config(targets)
-  {
+def build_config(targets, kubelet_discovery=false)
+  config = {
     'global' => {
       'scrape_interval' => '10s',
       'evaluation_interval' => '10s'
@@ -42,10 +48,16 @@ def build_config(targets)
       raise ArgumentError.new("one of \"#{address_var}\" or #{host_port_vars} must exist in ENV") if target_address.nil?
       {
         'job_name' => target,
-        'target_groups' => [{ 'targets' => [ target_address] }]
+        'target_groups' => [{ 'targets' => [target_address] }]
       }
     end
   }
+  # XXX: quick hack that assumes use of kubectl-proxy
+  if kubelet_discovery
+    kubelet_nodes = JSON.parse(Net::HTTP.get_response(URI.parse("http://localhost:8001/api/v1/nodes")).body)['items'].map {|x| x['metadata']['name'] }
+    config['scrape_configs'] << { 'job_name' => 'KUBELETS', 'target_groups' => [{ 'targets' => kubelet_nodes.map {|x| "#{x}:10255" } }] }
+  end
+  config
 end
 
 puts '------------------'
@@ -62,7 +74,7 @@ puts "config: #{options[:config]}"
 puts "storage: #{options[:storage]}"
 
 puts 'config file:'
-config_struct = build_config(options[:targets])
+config_struct = build_config(options[:targets], options[:kubelet])
 config_yaml = config_struct.to_yaml
 puts config_yaml
 IO.write(options[:config], config_yaml)
