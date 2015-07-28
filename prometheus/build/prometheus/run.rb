@@ -54,8 +54,16 @@ def build_config(targets, kubelet_discovery=false)
   }
   # XXX: quick hack that assumes use of kubectl-proxy
   if kubelet_discovery
-    kubelet_nodes = JSON.parse(Net::HTTP.get_response(URI.parse("http://localhost:8001/api/v1/nodes")).body)['items'].map {|x| x['metadata']['name'] }
-    config['scrape_configs'] << { 'job_name' => 'KUBELETS', 'target_groups' => [{ 'targets' => kubelet_nodes.map {|x| "#{x}:10255" } }] }
+    kube_api_server = ENV.fetch('KUBE_APISERVER_TARGET_ADDRESS', 'localhost:8001')
+    kubelet_port = ENV.fetch('KUBELET_PORT', '10255')
+    nodes_json = JSON.parse(Net::HTTP.get_response(URI.parse("http://#{kube_api_server}/api/v1/nodes")).body)
+    kubelet_node_names = nodes_json['items'].map {|x| x['metadata']['name'] }
+    config['scrape_configs'] << {
+      'job_name' => 'KUBELETS',
+      'target_groups' => [{
+        'targets' => kubelet_node_names.map { |name| "#{name}:#{kubelet_port}" }
+      }]
+    }
   end
   config
 end
