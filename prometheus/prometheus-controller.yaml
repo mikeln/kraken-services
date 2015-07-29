@@ -44,7 +44,7 @@ spec:
           value: $KUBE_CONTROLLER_IP:10252
         - name: KUBE_SCHEDULER_TARGET_ADDRESS
           value: $KUBE_SCHEDULER_IP:10251
-        image: quay.io/spiffxp/prometheus:latest
+        image: quay.io/samsung_ag/prometheus:latest
         imagePullPolicy: Always
         name: prometheus
         ports:
