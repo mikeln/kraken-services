@@ -34,6 +34,7 @@ spec:
         - PROMETHEUS,KUBE_APISERVER,KUBE_CONTROLLER,KUBE_SCHEDULER
         - -d
         - /var/prometheus
+        - -K
         env:
         - name: PROMETHEUS_TARGET_ADDRESS
           value: localhost:9090
@@ -68,6 +69,5 @@ spec:
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       volumes:
-      - hostPath:
-          path: /mnt/promdash
-        name: data
+      - name: data 
+        emptyDir: {}
