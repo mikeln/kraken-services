@@ -54,7 +54,7 @@ node('master') {
         prometheus.push 'latest'
       }
     }
-    sh "echo 'Kraken services build ${currentBuild.displayName} succeeded' | hipchat_room_message -f Pipelet -c red -n 1"
+    sh "echo 'Kraken services build ${currentBuild.displayName} succeeded' | hipchat_room_message -f Pipelet -c green -n 1"
   } catch (e) {
     sh "echo 'Kraken services build ${currentBuild.displayName} failed with ${e.message}' | hipchat_room_message -f Pipelet -c red"
     throw e
