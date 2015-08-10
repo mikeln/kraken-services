@@ -19,7 +19,7 @@ spec:
       - env:
         - name: DATABASE_URL
           value: sqlite3:/promdash/file.sqlite3
-        image: quay.io/spiffxp/promdash:latest
+        image: quay.io/samsung_ag/promdash:latest
         imagePullPolicy: Always
         name: promdash
         ports:
