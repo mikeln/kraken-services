@@ -790,7 +790,7 @@
         "resolution": 4
       },
       {
-        "title": "etcd_request_latencies_summary_µs (q[{{quantile}}] \\u003e {{etcd_request_latency_threshold_us}} µs)",
+        "title": "etcd_request_latencies_summary_µs (q[{{quantile}}] > {{etcd_request_latency_threshold_us}} µs)",
         "range": "30m",
         "endTime": null,
         "expressions": [
@@ -798,7 +798,7 @@
             "id": 0,
             "serverID": 1,
             "axisID": 1,
-            "expression": "avg(etcd_request_latencies_summary{quantile=\"{{quantile}}\"} \\u003e {{etcd_request_latency_threshold_us}}) by (operation,type)"
+            "expression": "avg(etcd_request_latencies_summary{quantile=\"{{quantile}}\"} > {{etcd_request_latency_threshold_us}}) by (operation,type)"
           }
         ],
         "tags": [],
