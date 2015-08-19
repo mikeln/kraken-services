@@ -19,7 +19,7 @@ spec:
       - env:
         - name: DATABASE_URL
           value: sqlite3:/promdash/file.sqlite3
-        image: prom/promdash
+        image: quay.io/samsung_ag/promdash:latest
         imagePullPolicy: Always
         name: promdash
         ports:
@@ -31,7 +31,7 @@ spec:
           name: data
       - args:
         - -t
-        - PROMETHEUS,KUBE_APISERVER,KUBE_CONTROLLER,KUBE_SCHEDULER
+        - PROMETHEUS,KUBE_APISERVER,KUBE_CONTROLLER,KUBE_SCHEDULER,APISERVER_ETCD,KUBE_ETCD,APISERVER_CADVISOR,ETCD_CADVISOR
         - -d
         - /var/prometheus
         - -K
@@ -44,6 +44,14 @@ spec:
           value: $KUBE_CONTROLLER_IP:10252
         - name: KUBE_SCHEDULER_TARGET_ADDRESS
           value: $KUBE_SCHEDULER_IP:10251
+        - name: APISERVER_ETCD_TARGET_ADDRESS
+          value: $KUBE_APISERVER_IP:4001
+        - name: KUBE_ETCD_TARGET_ADDRESS
+          value: $KUBE_ETCD_IP:4001
+        - name: APISERVER_CADVISOR_TARGET_ADDRESS
+          value: $KUBE_APISERVER_IP:8094
+        - name: ETCD_CADVISOR_TARGET_ADDRESS
+          value: $KUBE_ETCD_IP:8094
         image: quay.io/samsung_ag/prometheus:latest
         imagePullPolicy: Always
         name: prometheus
@@ -67,6 +75,8 @@ spec:
         imagePullPolicy: IfNotPresent
         name: kubectl-proxy
       dnsPolicy: ClusterFirst
+      nodeSelector:
+        kraken-node: node-01
       restartPolicy: Always
       volumes:
       - name: data 
