@@ -76,7 +76,7 @@ spec:
         name: kubectl-proxy
       dnsPolicy: ClusterFirst
       nodeSelector:
-        kraken-node: node-01
+        kraken-node: node-001
       restartPolicy: Always
       volumes:
       - name: data 

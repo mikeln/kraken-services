@@ -38,5 +38,5 @@ spec:
           protocol: TCP
       dnsPolicy: ClusterFirst
       nodeSelector:
-        kraken-node: node-01
+        kraken-node: node-001
       restartPolicy: Always
