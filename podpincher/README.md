@@ -26,9 +26,9 @@ elb:
         protocol: HTTP
       - elb_port: 8080                # add this section to the listeners array
         forwarding_to: 30977          # add this section to the listeners array
-        protocol: HTTP                # add this section to the listeners array 
+        protocol: HTTP                # add this section to the listeners array
     healthy_threshold: 2
-    unhealthy_threshold: 3 
+    unhealthy_threshold: 3
     timeout: 5
     interval: 30
     heathcheck_port: 30977

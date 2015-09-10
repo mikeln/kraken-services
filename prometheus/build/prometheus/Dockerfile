@@ -1,7 +1,10 @@
 FROM       prom/prometheus
 MAINTAINER Aaron Crickenberger <spiffxp@gmail.com>
 
-COPY ./run.sh /prometheus/run.sh
+RUN apk add --update ruby ruby-json
 
-ENTRYPOINT ["/bin/sh", "/prometheus/run.sh"]
+COPY ./run.sh /prometheus/run.sh
+COPY ./run.rb /prometheus/run.rb
+
+ENTRYPOINT ["/usr/bin/ruby", "/prometheus/run.rb"]
 CMD []
