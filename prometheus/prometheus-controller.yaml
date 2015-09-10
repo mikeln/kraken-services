@@ -31,7 +31,7 @@ spec:
           name: data
       - args:
         - -t
-        - PROMETHEUS,KUBE_APISERVER,KUBE_CONTROLLER,KUBE_SCHEDULER,APISERVER_ETCD,KUBE_ETCD,APISERVER_CADVISOR,ETCD_CADVISOR
+        - PROMETHEUS,KUBE_APISERVER,KUBE_CONTROLLER,KUBE_SCHEDULER,APISERVER_ETCD,KUBE_ETCD,APISERVER_CADVISOR,ETCD_CADVISOR,PUSHGATEWAY
         - -d
         - /var/prometheus
         - -K
@@ -52,6 +52,8 @@ spec:
           value: $KUBE_APISERVER_IP:8094
         - name: ETCD_CADVISOR_TARGET_ADDRESS
           value: $KUBE_ETCD_IP:8094
+        - name: PUSHGATEWAY_TARGET_ADDRESS
+          value: localhost:9091
         image: quay.io/samsung_ag/prometheus:latest
         imagePullPolicy: Always
         name: prometheus
@@ -62,6 +64,12 @@ spec:
         volumeMounts:
         - mountPath: /var/prometheus/
           name: data
+      - image: "jayunit100/prompush:0.2.0"
+        name:  pushgateway
+        ports:
+        - containerPort: 9091
+          hostPort: 9091
+          protocol: TCP
       - args:
         - proxy
         - --port=8001
