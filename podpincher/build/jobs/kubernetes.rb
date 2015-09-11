@@ -29,7 +29,7 @@ class EventProcessor
     [(r*256).to_i, (g*256).to_i, (b*256).to_i]
   end
 
-  def get_random_color(host = false)
+  def get_random_color(host)
     @h += @golden_ratio_conjugate
     @h %= 1
     color = hsv_to_rgb(@h, host ? 0.1 : 0.99, 0.99)
@@ -44,11 +44,17 @@ class EventProcessor
       end
     end
 
-    if @colors.select{|key, val| val == color_as_hex }.length != 0
-      get_random_color(host)
-    else
-      color_as_hex
+    color_as_hex
+  end
+
+  def get_color(host = false)
+    color = get_random_color(host)
+
+    while @colors.select{|key, val| val == color }.length != 0 do
+      color = get_random_color(host)
     end
+
+    color
   end
 
   def set_color(metadata, host = false)
@@ -58,7 +64,7 @@ class EventProcessor
     color_key = metadata['labels']['name'] if color_key.nil?
     color_key = metadata['name'] if color_key.nil?
     
-    color = metadata['labels']['kubernetes.io/color'].nil? ? get_random_color(host) : "##{metadata['labels']['kubernetes.io/color']}"
+    color = metadata['labels']['kubernetes.io/color'].nil? ? get_color(host) : "##{metadata['labels']['kubernetes.io/color']}"
     @colors[color_key] = color if @colors[color_key].nil?
 
     color_key
