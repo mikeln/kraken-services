@@ -23,7 +23,7 @@ spec:
         - name: KUBERNETES_API_VER
           value: v1
         - name: KUBERNETES_API_URL
-          value: https://kubernetes:443/api/
+          value: $KUBE_MASTER_URL/api/
         ports:
         - containerPort: 4567
           hostPort: 4567
