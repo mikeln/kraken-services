@@ -23,7 +23,7 @@ spec:
         - name: KUBERNETES_API_VER
           value: v1
         - name: KUBERNETES_API_URL
-          value: http://10.0.32.130:8080/api/
+          value: $KUBE_MASTER_URL/api/
         ports:
         - containerPort: 4567
           hostPort: 4567
