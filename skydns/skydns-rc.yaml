@@ -6,7 +6,7 @@ metadata:
     k8s-app: kube-dns-v3
     kubernetes.io/cluster-service: "true"
   name: kube-dns-v3
-  namespace: default
+  namespace: kube-system
 spec:
   replicas: 3
   selector:
@@ -87,7 +87,7 @@ spec:
               cpu: 10m
               memory: 20Mi
           args:
-            - -cmd=nslookup kubernetes.default.svc.$CLUSTER_DOMAIN localhost >/dev/null
+            - -cmd=nslookup kubernetes.kube-system.svc.$CLUSTER_DOMAIN localhost >/dev/null
             - -port=8080
           ports:
             - containerPort: 8080
