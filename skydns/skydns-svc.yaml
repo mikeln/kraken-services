@@ -7,7 +7,7 @@ metadata:
     kubernetes.io/cluster-service: "true"
     kubernetes.io/name: "KubeDNS"
   name: kube-dns
-  namespace: default
+  namespace: kube-system
 spec:
   ports:
   - name: dns
