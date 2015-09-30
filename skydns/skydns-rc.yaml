@@ -3,9 +3,9 @@ apiVersion: v1
 kind: ReplicationController
 metadata:
   labels:
-    k8s-app: kube-dns-v3
+    k8s-app: kube-dns
     kubernetes.io/cluster-service: "true"
-  name: kube-dns-v3
+  name: kube-dns
   namespace: kube-system
 spec:
   replicas: 3
