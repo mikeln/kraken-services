@@ -4,10 +4,10 @@ require 'paleta'
 
 class EventProcessor
   def initialize
-    
+
     ssl_options = { verify_ssl: OpenSSL::SSL::VERIFY_NONE }
     @client = Kubeclient::Client.new ENV.fetch('KUBERNETES_API_URL', 'https://kubernetes:443/api/'), ENV.fetch('KUBERNETES_API_VER', 'v1'), ssl_options: ssl_options
-    
+
     @colors = {}
   end
 
@@ -17,8 +17,8 @@ class EventProcessor
     color_key = metadata['labels']['k8s-app'] if color_key.nil?
     color_key = metadata['labels']['name'] if color_key.nil?
     color_key = metadata['name'] if color_key.nil?
-    
-    if @colors[color_key].nil? 
+
+    if @colors[color_key].nil?
       color = metadata['labels']['kubernetes.io/color'].nil? ? "##{color}" : "##{metadata['labels']['kubernetes.io/color']}"
       @colors[color_key] = color
     end
@@ -30,21 +30,20 @@ class EventProcessor
     hosts = {}
     kube_hosts = @client.get_nodes
 
-    color = Paleta::Color.new(:hex, "a5e31b")
-    palette = Paleta::Palette.generate(:type => :split_complement, :from => :color, :size => kube_hosts.length, :color => color)
-    palette.lighten!(50)
+    palette = Paleta::Palette.generate(:type => :random, :size => kube_hosts.length)
 
-    kube_hosts.each_with_index { |node, index| 
+    kube_hosts.each_with_index { |node, index|
 
       host_status = node[:status]['conditions'].select {|condition| condition['type'] == 'Ready' }
 
       if host_status[0]['status'] == 'True'
+        palette[index].saturation = 20
         hosts[node[:metadata]['name']] = {
           :name => node[:metadata]['name'],
           :friendly_name => node[:metadata]['labels']['kraken-node'],
           :host => node[:metadata]['name'],
           :color => "##{palette[index].hex}"
-        } 
+        }
       end
     }
 
@@ -53,19 +52,17 @@ class EventProcessor
 
   def getPods
     pods = {}
-
     kube_pods = @client.get_pods
-
     palette = Paleta::Palette.generate(:type => :random, :size => kube_pods.length)
 
-    kube_pods.each_with_index { |pod, index| 
+    kube_pods.each_with_index { |pod, index|
       pods[pod[:spec]['nodeName']] = [] if pods[pod[:spec]['nodeName']].nil?
 
-      # friendly name 
+      # friendly name
       friendly_name = pod[:metadata]['labels']['kubernetes.io/name']
       friendly_name = pod[:metadata]['labels']['k8s-app'] if friendly_name.nil?
       friendly_name = pod[:metadata]['labels']['name'] if friendly_name.nil?
-      
+
       # setup color for this pod type
       color_key = set_color(pod[:metadata], palette[index].hex)
 
@@ -85,7 +82,7 @@ class EventProcessor
   end
 
   def combine(hosts, pods)
-    
+
     kube_data = {
       :name => 'kraken cluster',
       :color => '#FFFFFF',
@@ -102,7 +99,7 @@ class EventProcessor
           :color => host_data[:color],
           :children => pods[host_data[:name]]
         }
-      ) 
+      )
     end
 
     kube_data
