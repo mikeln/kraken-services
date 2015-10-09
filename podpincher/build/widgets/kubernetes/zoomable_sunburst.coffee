@@ -1,7 +1,7 @@
 class window.ZoomableSunburst
 
     constructor: (@container, @name, @host) ->
-        
+
         @container = $(@container)
         @name = $(@name)
         @host = $(@host)
@@ -9,7 +9,7 @@ class window.ZoomableSunburst
         @width = @container.outerWidth()
         @height = @container.outerHeight()
         @radius = Math.min(@width, @height) / 2.5;
-        @node 
+        @node
 
         @x = d3.scale.linear().range([
             0
@@ -24,7 +24,7 @@ class window.ZoomableSunburst
             .attr("width", @width)
             .attr("height", @height)
             .append("g").attr("transform", "translate(" + @width / 2 + "," + (@height / 2 + 10) + ")")
-        
+
         @partition = d3.layout.partition().value((d) ->
             if d.value
                 d.value
@@ -45,7 +45,7 @@ class window.ZoomableSunburst
 
     format_name: (d) =>
         if d.friendly_name
-            "<b>" + d.friendly_name + "</b>"       
+            "<b>" + d.friendly_name + "</b>"
         else
             "<b>" + d.name + "</b>"
 
@@ -53,7 +53,7 @@ class window.ZoomableSunburst
         if d.host
             "<b>" + d.host + "</b>"
 
-    arcTween: (d) => 
+    arcTween: (d) =>
         xd = d3.interpolate(@x.domain(), [
             d.x
             d.x + d.dx
@@ -67,7 +67,7 @@ class window.ZoomableSunburst
             @radius
         ])
         (d, i) =>
-            (if i then (t) =>  
+            (if i then (t) =>
                 @arc d
             else (t) =>
                 @x.domain xd(t)
@@ -81,7 +81,7 @@ class window.ZoomableSunburst
         return
 
     mouseover: (d) =>
-        @name.html(@format_name(d)) 
+        @name.html(@format_name(d))
         @host.html(@format_host(d))
 
     mouseout: (d) =>
@@ -99,7 +99,7 @@ class window.ZoomableSunburst
             i++
         null
 
-    update: (data) => 
+    update: (data) =>
         if @node
             @node = @findName(data, @node.name)
             if !@node
@@ -109,14 +109,14 @@ class window.ZoomableSunburst
 
 
         @path = @svg.selectAll("path")
-            .data(@partition.nodes(data), (d) -> 
+            .data(@partition.nodes(data), (d) ->
                 d.name + d.host)
 
         @path.enter()
             .append("path")
             .attr("d", @arc)
-            .attr("stroke", "white")
-            .attr("fill", (d) -> 
+#           .attr("stroke", "white")
+            .attr("fill", (d) ->
                 return d.color )
             .on("click", @click)
             .on("mouseover", @mouseover)
@@ -128,4 +128,3 @@ class window.ZoomableSunburst
         console.log("drawChart data: #{data}", data)
         @update(data)
         @path.transition().duration(750).attrTween "d", @arcTween(@node)
-        
