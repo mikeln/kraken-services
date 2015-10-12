@@ -63,7 +63,7 @@ spec:
         volumeMounts:
         - mountPath: /var/prometheus/
           name: data
-      - image: "jayunit100/prompush:0.2.0"
+      - image: "prom/pushgateway:latest"
         name:  pushgateway
         ports:
         - containerPort: 9091
