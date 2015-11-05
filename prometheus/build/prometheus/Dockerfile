@@ -1,4 +1,4 @@
-FROM       prom/prometheus
+FROM       prom/prometheus:0.16.1
 MAINTAINER Aaron Crickenberger <spiffxp@gmail.com>
 
 RUN apk add --update ruby ruby-json

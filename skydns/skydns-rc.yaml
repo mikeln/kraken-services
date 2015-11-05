@@ -63,7 +63,7 @@ spec:
           image: gcr.io/google_containers/skydns:2015-03-11-001
           # command: "/skydns"
           args:
-            - -machines=http://localhost:4001
+            - -machines=http://127.0.0.1:4001
             - -addr=0.0.0.0:53
             - -domain=$CLUSTER_DOMAIN.
           ports:
@@ -94,7 +94,7 @@ spec:
               cpu: 10m
               memory: 20Mi
           args:
-            - -cmd=nslookup kube-dns.kube-system.svc.$CLUSTER_DOMAIN localhost >/dev/null
+            - -cmd=nslookup kube-dns.kube-system.svc.$CLUSTER_DOMAIN 127.0.0.1 >/dev/null
             - -port=8080
           ports:
             - containerPort: 8080
