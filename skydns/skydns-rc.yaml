@@ -40,6 +40,8 @@ spec:
           volumeMounts:
             - name: etcd-storage
               mountPath: /var/etcd/data
+            - name: rkt-resolv-conf
+              mountPath: /etc/resolv.conf
         - name: kube2sky
           resources:
             limits:
@@ -103,3 +105,5 @@ spec:
       volumes:
         - name: etcd-storage
           emptyDir: {}
+        - name: rkt-resolv-conf
+          hostPath: /run/systemd/resolve/resolv.conf
