@@ -106,4 +106,5 @@ spec:
         - name: etcd-storage
           emptyDir: {}
         - name: rkt-resolv-conf
-          hostPath: /run/systemd/resolve/resolv.conf
+          hostPath: 
+            path: /run/systemd/resolve/resolv.conf
