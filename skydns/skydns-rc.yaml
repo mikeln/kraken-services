@@ -107,4 +107,5 @@ spec:
           emptyDir: {}
         - name: rkt-resolv-conf
           hostPath: 
-            path: /run/systemd/resolve/resolv.conf
+            path: /etc/resolv.conf
+            #path: /run/systemd/resolve/resolv.conf
