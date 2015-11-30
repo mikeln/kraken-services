@@ -3,20 +3,21 @@ apiVersion: v1
 kind: ReplicationController
 metadata:
   labels:
-    k8s-app: kube-dns-v3
+    k8s-app: kube-dns-v9
     kubernetes.io/cluster-service: "true"
+    version: v9
   name: kube-dns-v3
   namespace: kube-system
 spec:
   replicas: 3
   selector:
     k8s-app: kube-dns
-    version: v3
+    version: v9
   template:
     metadata:
       labels:
         k8s-app: kube-dns
-        version: v3
+        version: v9
         kubernetes.io/color: FFFF66
         kubernetes.io/cluster-service: "true"
     spec:
@@ -49,22 +50,17 @@ spec:
           # command: "/kube2sky"
           args:
             - -domain=$CLUSTER_DOMAIN
-            - -kube_master_url=$KUBE_MASTER_URL
-            # - -kubecfg_file=/etc/dns_token/kubeconfig
-          # volumeMounts:
-          # - mountPath: /etc/dns_token
-            # name: dns-token
-            # readOnly: true
         - name: skydns
           resources:
             limits:
               cpu: 100m
               memory: 50Mi
-          image: gcr.io/google_containers/skydns:2015-03-11-001
+          image: gcr.io/google_containers/skydns:2015-10-13-8c72f8c
           # command: "/skydns"
           args:
             - -machines=http://127.0.0.1:4001
             - -addr=0.0.0.0:53
+            - -ns-rotate=false
             - -domain=$CLUSTER_DOMAIN.
           ports:
             - containerPort: 53
@@ -94,7 +90,7 @@ spec:
               cpu: 10m
               memory: 20Mi
           args:
-            - -cmd=nslookup kube-dns.kube-system.svc.$CLUSTER_DOMAIN 127.0.0.1 >/dev/null
+            - -cmd=nslookup kubernetes.default.svc.$CLUSTER_DOMAIN 127.0.0.1 >/dev/null
             - -port=8080
           ports:
             - containerPort: 8080
