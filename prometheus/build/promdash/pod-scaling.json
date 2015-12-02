@@ -314,7 +314,7 @@
             "id": 0,
             "serverID": 1,
             "axisID": 1,
-            "expression": "sum(container_cpu_usage_seconds_total{job=~\"_CADVISOR\",name=~\"etcd2|kube\"}) by (job, name) > 0"
+            "expression": "sum(container_cpu_usage_seconds_total{job=~\"_CADVISOR\",id=~\"etcd2|/hyperkube\"}) by (job, id) > 0"
           }
         ],
         "tags": [],
@@ -349,7 +349,7 @@
             "id": 0,
             "serverID": 1,
             "axisID": 1,
-            "expression": "container_memory_usage_bytes{job=~\"_CADVISOR\", name=~\"etcd2|kube\"} > 0"
+            "expression": "container_memory_usage_bytes{job=~\"_CADVISOR\", id=~\"etcd2|/hyperkube\"} > 0"
           }
         ],
         "tags": [],
@@ -384,7 +384,7 @@
             "id": 0,
             "serverID": 1,
             "axisID": 1,
-            "expression": "avg(rate(container_cpu_usage_seconds_total{job=~\"_CADVISOR\",name=~\"etcd2|kube\"}[{{rate_window}}])) by (job,name)"
+            "expression": "avg(rate(container_cpu_usage_seconds_total{job=~\"_CADVISOR\",id=~\"etcd2|/hyperkube\"}[{{rate_window}}])) by (job,id)"
           }
         ],
         "tags": [],
@@ -419,7 +419,7 @@
             "id": 0,
             "serverID": 1,
             "axisID": 1,
-            "expression": "avg(rate(container_memory_usage_bytes{job=~\"_CADVISOR\",name=~\"etcd2|kube\"}[{{rate_window}}])) by (job,name)"
+            "expression": "avg(rate(container_memory_usage_bytes{job=~\"_CADVISOR\",id=~\"etcd2|/hyperkube\"}[{{rate_window}}])) by (job,id)"
           }
         ],
         "tags": [],
@@ -866,7 +866,7 @@
             "id": 0,
             "serverID": 1,
             "axisID": 1,
-            "expression": "sum(container_network_receive_bytes_total{name=\"/\"}) by (job)"
+            "expression": "sum(container_network_receive_bytes_total{id=\"/\"}) by (job)"
           }
         ],
         "tags": [],
@@ -900,7 +900,7 @@
             "id": 0,
             "serverID": 1,
             "axisID": 1,
-            "expression": "sum(container_network_transmit_bytes_total{name=\"/\"}) by (job)"
+            "expression": "sum(container_network_transmit_bytes_total{id=\"/\"}) by (job)"
           }
         ],
         "tags": [],
@@ -934,7 +934,7 @@
             "id": 0,
             "serverID": 1,
             "axisID": 1,
-            "expression": "sum(rate(container_network_receive_bytes_total{name=\"/\"}[{{rate_window}}])) by (job)"
+            "expression": "sum(rate(container_network_receive_bytes_total{id=\"/\"}[{{rate_window}}])) by (job)"
           }
         ],
         "tags": [],
@@ -968,7 +968,7 @@
             "id": 0,
             "serverID": 1,
             "axisID": 1,
-            "expression": "sum(rate(container_network_transmit_bytes_total{name=\"/\"}[{{rate_window}}])) by (job)"
+            "expression": "sum(rate(container_network_transmit_bytes_total{id=\"/\"}[{{rate_window}}])) by (job)"
           }
         ],
         "tags": [],
