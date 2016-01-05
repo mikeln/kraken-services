@@ -22,16 +22,8 @@ node('master') {
         load_gen.push 'latest'
       }
 
-      stage 'Building influxdb image'
-      def influxdb = docker.build("samsung_ag/influxdb:${env.BUILD_NUMBER}", "influxdb-grafana/build/influxdb")
-      stage 'Pushing influxdb image'
-      docker.withRegistry('https://quay.io/v1', 'quay-io') {
-        influxdb.push()
-        influxdb.push 'latest'
-      }
-
       stage 'Building grafana image'
-      def grafana = docker.build("samsung_ag/grafana:${env.BUILD_NUMBER}", "influxdb-grafana/build/grafana")
+      def grafana = docker.build("samsung_ag/grafana:${env.BUILD_NUMBER}", "cluster-monitoring/build/grafana")
       stage 'Pushing grafana image'
       docker.withRegistry('https://quay.io/v1', 'quay-io') {
         grafana.push()
@@ -44,6 +36,14 @@ node('master') {
       docker.withRegistry('https://quay.io/v1', 'quay-io') {
         podpincher.push()
         podpincher.push 'latest'
+      }
+
+      stage 'Building promdash image'
+      def prometheus = docker.build("samsung_ag/promdash:${env.BUILD_NUMBER}", "prometheus/build/promdash")
+      stage 'Pushing prometheus image'
+      docker.withRegistry('https://quay.io/v1', 'quay-io') {
+        prometheus.push()
+        prometheus.push 'latest'
       }
 
       stage 'Building prometheus image'
