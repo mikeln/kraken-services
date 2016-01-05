@@ -39,11 +39,11 @@ node('master') {
       }
 
       stage 'Building promdash image'
-      def prometheus = docker.build("samsung_ag/promdash:${env.BUILD_NUMBER}", "prometheus/build/promdash")
-      stage 'Pushing prometheus image'
+      def promdash = docker.build("samsung_ag/promdash:${env.BUILD_NUMBER}", "prometheus/build/promdash")
+      stage 'Pushing promdash image'
       docker.withRegistry('https://quay.io/v1', 'quay-io') {
-        prometheus.push()
-        prometheus.push 'latest'
+        promdash.push()
+        promdash.push 'latest'
       }
 
       stage 'Building prometheus image'
