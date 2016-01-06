@@ -1,5 +1,4 @@
 node('master') {
-  sh "echo 'Starting kraken services build ${currentBuild.displayName}' | hipchat_room_message -f Pipelet -c green"
   try {
     stage 'Downloading sources'
     git credentialsId: 'jenkins-ssh', url: 'git@github.com:Samsung-AG/kraken-services.git'
@@ -54,9 +53,7 @@ node('master') {
         prometheus.push 'latest'
       }
     }
-    sh "echo 'Kraken services build ${currentBuild.displayName} succeeded' | hipchat_room_message -f Pipelet -c green -n 1"
   } catch (e) {
-    sh "echo 'Kraken services build ${currentBuild.displayName} failed with ${e.message}' | hipchat_room_message -f Pipelet -c red"
     throw e
   }
 }
