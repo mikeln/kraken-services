@@ -20,3 +20,20 @@ spec:
           image: gcr.io/google_containers/pause:go
       dnsPolicy: ClusterFirst
       restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: pause
+    kubernetes.io/name: "Pause"
+  name: pause
+  namespace: default
+spec:
+  ports:
+  - name: pause
+    port: 80
+  selector:
+    name: pause
+  sessionAffinity: None
+  type: ClusterIP

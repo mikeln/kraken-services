@@ -1,4 +1,104 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: kube-system
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: monitoring-grafana
+  namespace: kube-system
+  labels:
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "Grafana"
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+      nodePort: 30320
+  selector:
+    k8s-app: influxGrafana
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: monitoring-influxdb
+  namespace: kube-system
+  labels:
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "InfluxDB"
+spec:
+  ports:
+  - name: http
+    port: 8083
+    targetPort: 8083
+    nodePort: 30321
+    protocol: TCP
+  - name: api
+    port: 8086
+    targetPort: 8086
+    nodePort: 30322
+    protocol: TCP
+  selector:
+    k8s-app: influxGrafana
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: heapster
+  namespace: kube-system
+  labels:
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "Heapster"
+spec:
+  ports:
+    - port: 80
+      targetPort: 8082
+      nodePort: 30310
+  selector:
+    k8s-app: heapster
+  type: NodePort
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: heapster-v10
+  namespace: kube-system
+  labels:
+    k8s-app: heapster
+    kubernetes.io/cluster-service: "true"
+    version: v10
+spec:
+  replicas: 1
+  selector:
+    k8s-app: heapster
+    version: v10
+  template:
+    metadata:
+      labels:
+        k8s-app: heapster
+        version: v10
+        kubernetes.io/cluster-service: "true"
+        kubernetes.io/color: FFB266
+    spec:
+      containers:
+        - image: gcr.io/google_containers/heapster:v0.18.2
+          name: heapster
+          resources:
+            limits:
+              cpu: 100m
+              memory: 300Mi
+          command:
+            - /heapster
+            - --source=kubernetes:''
+            - --sink=influxdb:http://monitoring-influxdb:8086
+            - --stats_resolution=30s
+            - --sink_frequency=1m
+---
+apiVersion: v1
 kind: ReplicationController
 metadata:
   name: monitoring-influxdb-grafana-v2
