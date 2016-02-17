@@ -1,4 +1,12 @@
 apiVersion: v1
+kind: Secret
+metadata:
+  name: tectonic-ui-dockercfg
+data:
+  .dockercfg: $DOCKERCFG_BASE64
+type: kubernetes.io/dockercfg
+---
+apiVersion: v1
 kind: ReplicationController
 metadata:
   labels:
@@ -28,3 +36,22 @@ spec:
             - --public-dir=/opt/bridge/static
       imagePullSecrets:
         - name: tectonic-ui-dockercfg
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: tectonic-ui
+  name: tectonic-ui
+  namespace: default
+spec:
+  ports:
+  - name: http
+    nodePort: 30380
+    port: 9000
+    protocol: TCP
+    targetPort: 9000
+  selector:
+    name: tectonic-ui
+  sessionAffinity: None
+  type: NodePort
