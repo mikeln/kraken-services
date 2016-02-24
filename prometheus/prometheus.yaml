@@ -40,17 +40,17 @@ spec:
           value: localhost:9090
         # XXX: don't expect this to gather sane data once there are N apiserver's behind the master
         - name: KUBE_APISERVER_TARGET_ADDRESS
-          value: $KUBE_MASTER_IP:8080
+          value: {{master_private_ip}}:8080
         - name: KUBE_CONTROLLER_TARGET_ADDRESS
-          value: $KUBE_CONTROLLER_IP:10252
+          value: {{master_private_ip}}:10252
         - name: KUBE_SCHEDULER_TARGET_ADDRESS
-          value: $KUBE_SCHEDULER_IP:10251
+          value: {{master_private_ip}}:10251
         - name: KUBE_ETCD_TARGET_ADDRESS
-          value: $KUBE_ETCD_IP:4001
+          value: {{etcd_private_ip}}:4001
         - name: MASTER_CADVISOR_TARGET_ADDRESS
-          value: $KUBE_MASTER_IP:8094
+          value: {{master_private_ip}}:8094
         - name: ETCD_CADVISOR_TARGET_ADDRESS
-          value: $KUBE_ETCD_IP:8094
+          value: {{etcd_private_ip}}:8094
         - name: PUSHGATEWAY_TARGET_ADDRESS
           value: localhost:9091
         image: quay.io/samsung_ag/prometheus:latest
@@ -74,7 +74,7 @@ spec:
         kraken-node: node-001
       restartPolicy: Always
       volumes:
-      - name: data 
+      - name: data
         emptyDir: {}
 ---
 apiVersion: v1
