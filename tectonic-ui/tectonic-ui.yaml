@@ -3,7 +3,7 @@ kind: Secret
 metadata:
   name: tectonic-ui-dockercfg
 data:
-  .dockercfg: {{dockercfg_base64}}
+  .dockercfg: {{services.dockercfg_base64}}
 type: kubernetes.io/dockercfg
 ---
 apiVersion: v1

@@ -40,17 +40,17 @@ spec:
           value: localhost:9090
         # XXX: don't expect this to gather sane data once there are N apiserver's behind the master
         - name: KUBE_APISERVER_TARGET_ADDRESS
-          value: {{master_private_ip}}:8080
+          value: {{services.apiserver_ip}}:8080
         - name: KUBE_CONTROLLER_TARGET_ADDRESS
-          value: {{master_private_ip}}:10252
+          value: {{services.controller_manager_ip}}:10252
         - name: KUBE_SCHEDULER_TARGET_ADDRESS
-          value: {{master_private_ip}}:10251
+          value: {{services.scheduler_ip}}:10251
         - name: KUBE_ETCD_TARGET_ADDRESS
-          value: {{etcd_private_ip}}:4001
+          value: {{services.etcd_ip}}:4001
         - name: MASTER_CADVISOR_TARGET_ADDRESS
-          value: {{master_private_ip}}:8094
+          value: {{services.master_ip}}:8094
         - name: ETCD_CADVISOR_TARGET_ADDRESS
-          value: {{etcd_private_ip}}:8094
+          value: {{services.etcd_ip}}:8094
         - name: PUSHGATEWAY_TARGET_ADDRESS
           value: localhost:9091
         image: quay.io/samsung_ag/prometheus:latest

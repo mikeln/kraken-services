@@ -23,7 +23,7 @@ spec:
         - name: KUBERNETES_API_VER
           value: v1
         - name: KUBERNETES_API_URL
-          value: {{master_private_ip}}:8080/api/
+          value: {{services.master_ip}}:8080/api/
         ports:
         - containerPort: 4567
           hostPort: 4567
