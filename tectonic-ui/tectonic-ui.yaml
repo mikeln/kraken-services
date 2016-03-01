@@ -3,7 +3,7 @@ kind: Secret
 metadata:
   name: tectonic-ui-dockercfg
 data:
-  .dockercfg: $DOCKERCFG_BASE64
+  .dockercfg: {{services.dockercfg_base64}}
 type: kubernetes.io/dockercfg
 ---
 apiVersion: v1
@@ -31,7 +31,7 @@ spec:
               hostPort: 9000
               protocol: TCP
           command:
-            - /opt/bridge/bin/bridge 
+            - /opt/bridge/bin/bridge
             - --k8s-endpoint=https://kubernetes
             - --public-dir=/opt/bridge/static
       imagePullSecrets:
