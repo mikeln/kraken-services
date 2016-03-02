@@ -51,13 +51,10 @@ metadata:
   name: "kubedash"
   namespace: "kube-system"
 spec:
-  sessionAffinity: None
-  type: NodePort
-  ports:
-    -
-      port: 80
-      protocol: TCP
-      targetPort: 8289
-      nodePort: 30390
-  selector:
-    name: "kubedash"
+    type: "LoadBalancer"
+    ports:
+      -
+        port: 80
+        targetPort: 8289
+    selector:
+      name: "kubedash"
