@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: pause
-          image: gcr.io/google_containers/pause:go
+          image: gcr.io/google_containers/pause:2.0
       dnsPolicy: ClusterFirst
       restartPolicy: Always
 ---
