@@ -39,8 +39,12 @@ spec:
         - name: PROMETHEUS_TARGET_ADDRESS
           value: localhost:9090
         # XXX: don't expect this to gather sane data once there are N apiserver's behind the master
+        - name: KUBERNETES_RO_SERVICE_HOST
+          value: localhost
+        - name: KUBERNETES_RO_SERVICE_PORT
+          value: "8001"
         - name: KUBE_APISERVER_TARGET_ADDRESS
-          value: {{services.apiserver_ip}}:8080
+          value: localhost:8001
         - name: KUBE_CONTROLLER_TARGET_ADDRESS
           value: {{services.controller_manager_ip}}:10252
         - name: KUBE_SCHEDULER_TARGET_ADDRESS
@@ -69,6 +73,11 @@ spec:
         - containerPort: 9091
           hostPort: 9091
           protocol: TCP
+      # TODO: Need to create our own kubectl container from
+      # https://github.com/kubernetes/kubernetes/tree/master/examples/kubectl-container
+      - image: "lachlanevenson/k8s-kubectl"
+        name: kubectl
+        args: [ "proxy", "-p",  "8001" ]
       dnsPolicy: ClusterFirst
       nodeSelector:
         kraken-node: node-001
