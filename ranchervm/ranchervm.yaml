@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: ranchervm-rc
+  name: ranchervm
 spec:
-  replicas: 6
+  replicas: 2
   selector:
     app: ranchervm
   template:
@@ -22,3 +22,5 @@ spec:
             limits:
               cpu: "1024m"
               memory: "1Gi"
+          securityContext:
+              privileged: false
