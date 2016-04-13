@@ -23,11 +23,16 @@ spec:
         - name: KUBERNETES_API_VER
           value: v1
         - name: KUBERNETES_API_URL
-          value: {{services.master_ip}}:8080/api/
+          value: http://127.0.0.1:8001/api/
         ports:
         - containerPort: 4567
           hostPort: 4567
           protocol: TCP
+      # TODO: Need to create our own kubectl container from
+      # https://github.com/kubernetes/kubernetes/tree/master/examples/kubectl-container
+      - image: "lachlanevenson/k8s-kubectl"
+        name: kubectl
+        args: [ "proxy", "-p",  "8001" ]
       dnsPolicy: ClusterFirst
       nodeSelector:
         kraken-node: node-001
