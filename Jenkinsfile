@@ -1,7 +1,7 @@
 node('master') {
   try {
     stage 'Downloading sources'
-    git credentialsId: 'jenkins-ssh', url: 'git@github.com:samsung-ag/kraken-services.git'
+    git credentialsId: 'jenkins-ssh', url: 'git@github.com:samsung-cnct/kraken-services.git'
     stage 'Building and publishing images'
     docker.withServer('unix:///run/docker.sock') {
 
