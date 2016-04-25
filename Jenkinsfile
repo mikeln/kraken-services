@@ -6,7 +6,7 @@ node('master') {
     docker.withServer('unix:///run/docker.sock') {
 
       stage 'Building load generator test service image'
-      def framework = docker.build("samsung_ag/trogdor-framework:${env.BUILD_NUMBER}", "loadtest/build/web_service")
+      def framework = docker.build("samsung_ag/trogdor-framework:${env.BUILD_NUMBER}", "loadtest/build/trogdor-framework")
       stage 'Pushing load generator test service image'
       docker.withRegistry('https://quay.io/v1', 'quay-io') {
         framework.push()
@@ -14,7 +14,7 @@ node('master') {
       }
 
       stage 'Building load generator image'
-      def load_gen = docker.build("samsung_ag/trogdor-load-generator:${env.BUILD_NUMBER}", "loadtest/build/load_generator")
+      def load_gen = docker.build("samsung_ag/trogdor-load-generator:${env.BUILD_NUMBER}", "loadtest/build/trogdor-load-generator")
       stage 'Pushing load generator image'
       docker.withRegistry('https://quay.io/v1', 'quay-io') {
         load_gen.push()
@@ -30,7 +30,7 @@ node('master') {
       }
 
       stage 'Building podpincher image'
-      def podpincher = docker.build("samsung_ag/podpincher:${env.BUILD_NUMBER}", "podpincher/build")
+      def podpincher = docker.build("samsung_ag/podpincher:${env.BUILD_NUMBER}", "podpincher/build/podpincher")
       stage 'Pushing podpincher image'
       docker.withRegistry('https://quay.io/v1', 'quay-io') {
         podpincher.push()
