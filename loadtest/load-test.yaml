@@ -16,7 +16,7 @@ spec:
         name: framework
     spec:
       containers:
-      - image: quay.io/samsung_ag/trogdor-framework:latest
+      - image: quay.io/samsung_cnct/trogdor-framework:latest
         imagePullPolicy: IfNotPresent
         name: framework
         ports:
@@ -78,7 +78,7 @@ spec:
           value: root
         - name: INFLUXDB_NAME
           value: k8s
-        image: quay.io/samsung_ag/trogdor-load-generator:latest
+        image: quay.io/samsung_cnct/trogdor-load-generator:latest
         imagePullPolicy: Always
         name: load-generator-master
         ports:
@@ -158,7 +158,7 @@ spec:
           value: root
         - name: INFLUXDB_NAME
           value: k8s
-        image: quay.io/samsung_ag/trogdor-load-generator:latest
+        image: quay.io/samsung_cnct/trogdor-load-generator:latest
         imagePullPolicy: Always
         name: load-generator-slave
       dnsPolicy: ClusterFirst

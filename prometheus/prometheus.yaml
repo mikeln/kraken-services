@@ -19,7 +19,7 @@ spec:
       - env:
         - name: DATABASE_URL
           value: sqlite3:/promdash/file.sqlite3
-        image: quay.io/samsung_ag/promdash:latest
+        image: quay.io/samsung_cnct/promdash:latest
         imagePullPolicy: Always
         name: promdash
         ports:
@@ -57,7 +57,7 @@ spec:
           value: {{services.etcd_ip}}:8094
         - name: PUSHGATEWAY_TARGET_ADDRESS
           value: localhost:9091
-        image: quay.io/samsung_ag/prometheus:latest
+        image: quay.io/samsung_cnct/prometheus:latest
         imagePullPolicy: Always
         name: prometheus
         ports:
