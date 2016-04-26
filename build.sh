@@ -40,7 +40,7 @@ while [[ $# > 1 ]]; do
   esac
 done
 
-if [[ $# < 1 ]] || [[ "$1" =~ ^- ]] || ![[ -d "$1" ]]; then
+if [[ $# < 1 ]] || [[ "$1" =~ ^- ]] || ! [[ -d "$1" ]]; then
   print_usage_and_die
 fi
 
