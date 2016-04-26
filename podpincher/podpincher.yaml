@@ -16,7 +16,7 @@ spec:
         name: podpincher
     spec:
       containers:
-      - image: quay.io/samsung_ag/podpincher:latest
+      - image: quay.io/samsung_cnct/podpincher:latest
         imagePullPolicy: Always
         name: podpincher
         env:
