@@ -14,7 +14,7 @@ metadata:
   name: kube-dns-v3
   namespace: kube-system
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     k8s-app: kube-dns
     version: v9
