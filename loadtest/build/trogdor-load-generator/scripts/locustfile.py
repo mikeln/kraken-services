@@ -170,4 +170,5 @@ def stream():
     return Response(gen(), mimetype="text/event-stream")
 
 events.slave_report += slave_report_log
-gevent.spawn(influx_worker)
+if os.getenv('INFLUX_ENABLED') == "true":
+    gevent.spawn(influx_worker)

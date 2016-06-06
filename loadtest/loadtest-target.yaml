@@ -1,0 +1,45 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: framework
+  namespace: default
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        name: framework
+    spec:
+      containers:
+      - command:
+        - /hello
+        - -debug
+        - -message
+        - "Hello, World"
+        - -port
+        - "9080"
+        image: quay.io/samsung_cnct/trogdor-framework:latest
+        imagePullPolicy: IfNotPresent
+        name: framework
+        ports:
+        - containerPort: 9080
+          protocol: TCP
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: framework
+  name: framework
+  namespace: default
+spec:
+  ports:
+  - port: 9080
+    protocol: TCP
+    targetPort: 9080
+  selector:
+    name: framework
+  sessionAffinity: None
+  type: ClusterIP
