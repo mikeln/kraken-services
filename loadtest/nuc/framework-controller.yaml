@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        kubernetes.io/color: 4C9900
+        cagby.io/color: 4C9900
         name: framework
     spec:
       containers:

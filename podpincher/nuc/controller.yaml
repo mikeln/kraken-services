@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        kubernetes.io/color: FF33FF
+        cagby.io/color: FF33FF
         name: podpincher
     spec:
       containers:

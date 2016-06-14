@@ -82,7 +82,7 @@ spec:
         k8s-app: heapster
         version: v10
         kubernetes.io/cluster-service: "true"
-        kubernetes.io/color: FFB266
+        cagby.io/color: FFB266
     spec:
       containers:
         - image: gcr.io/google_containers/heapster:v0.18.2
@@ -117,7 +117,7 @@ spec:
       labels:
         k8s-app: influxGrafana
         version: v2
-        kubernetes.io/color: 6666FF
+        cagby.io/color: 6666FF
         kubernetes.io/cluster-service: "true"
     spec:
       containers:

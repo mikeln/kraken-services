@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        kubernetes.io/color: FF0000
+        cagby.io/color: FF0000
         name: load-generator-master
     spec:
       containers:

@@ -18,7 +18,7 @@ spec:
         k8s-app: kube-ui
         version: v1
         kubernetes.io/cluster-service: "true"
-        kubernetes.io/color: "009999"
+        cagby.io/color: "009999"
     spec:
       containers:
       - name: kube-ui
