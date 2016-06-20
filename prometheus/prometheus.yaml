@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        kubernetes.io/color: E5CCFF
+        cagby.io/color: E5CCFF
         name: prometheus
     spec:
       containers:
