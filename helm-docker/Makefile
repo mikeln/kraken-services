@@ -23,7 +23,7 @@ precheck:
 
 .PHONY: build-helm
 build-helm:
-	docker run --rm -v ${GOPATH}:/go -w /go/src/k8s.io/helm -e LOCAL_USER=${USER} quay.io/samsung_cnct/goglide make bootstrap build
+	cd ${GOPATH}//src/k8s.io/helm; GOOS=linux GOARCH=amd64 make bootstrap build
 	cp ${GOPATH}/src/k8s.io/helm/bin/helm .
 	cd ${GOPATH}/src/k8s.io/helm; make docker-build
 	docker tag gcr.io/kubernetes-helm/tiller:canary ${DOCKER_REGISTRY}/tiller:$$(cd ${GOPATH}/src/k8s.io/helm; git rev-parse HEAD)
@@ -36,9 +36,9 @@ build-helm-docker:
 
 .PHONY: push
 push:
-	docker push ${DOCKER_REGISTRY}/tiller:$(cd ${GOPATH}/src/k8s.io/helm; git rev-parse HEAD)
+	docker push ${DOCKER_REGISTRY}/tiller:$$(cd ${GOPATH}/src/k8s.io/helm; git rev-parse HEAD)
 	docker push ${DOCKER_REGISTRY}/tiller:latest
-	docker push ${DOCKER_REGISTRY}/helm:$(cd ${GOPATH}/src/k8s.io/helm; git rev-parse HEAD)
+	docker push ${DOCKER_REGISTRY}/helm:$$(cd ${GOPATH}/src/k8s.io/helm; git rev-parse HEAD)
 	docker push ${DOCKER_REGISTRY}/helm:latest
 
 .PHONY: clean
