@@ -1,0 +1,118 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: {{.Values.k8sapp}}-{{.Values.version}}
+    kubernetes.io/cluster-service: "true"
+    version: {{.Values.version}}
+  name: {{.Values.k8sapp}}-{{.Values.version}}
+  namespace: kube-system
+spec:
+  replicas: {{.Values.replicas}}
+  selector:
+    k8s-app: {{.Values.k8sapp}}
+    version: {{.Values.version}}
+  template:
+    metadata:
+      labels:
+        k8s-app: {{.Values.k8sapp}}
+        version: {{.Values.version}}
+        cagby.io/color: {{.Values.color}}
+        kubernetes.io/cluster-service: "true"
+    spec:
+      containers:
+        - name: etcd
+          resources:
+            limits:
+              cpu: {{.Values.etcd_cpu}}
+              memory: {{.Values.etcd_mem}}
+          image: {{.Values.etcd_image}}
+          command:
+            - /usr/local/bin/etcd
+            - -data-dir
+            - /var/etcd/data
+            - -listen-client-urls
+            - {{.Values.etcd_listen_urls}}
+            - -advertise-client-urls
+            - {{.Values.etcd_advertise_urls}}
+            - -initial-cluster-token
+            - {{.Values.etcd_cluster_token}}
+          volumeMounts:
+            - name: etcd-storage
+              mountPath: /var/etcd/data
+        - name: kube2sky
+          resources:
+            limits:
+              cpu: {{.Values.kubesky_cpu}}
+              memory: {{.Values.lubesky_mem}}
+          image: {{.Values.kubesky_image}}
+          args:
+            - --domain={{.Values.dns_domain}}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: {{.Values.healthz_port}}
+              scheme: HTTP
+            initialDelaySeconds: {{.Values.healthz_delay}}
+            timeoutSeconds: {{.Values.healthz_timeout}}
+            successThreshold: {{.Values.healthz_success_thresh}}
+            failureThreshold: {{.Values.healthz_failure_thresh}}
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: {{.Values.readiness_port}}
+              scheme: HTTP
+            # we poll on pod startup for the Kubernetes master service and
+            # only setup the /readiness HTTP server once that's available.
+            initialDelaySeconds: {{.Values.readiness_delay}}
+            timeoutSeconds: {{.Values.readiness_timeout}}
+        - name: skydns
+          resources:
+            limits:
+              cpu: {{.Values.skydns_cpu}}
+              memory: {{.Values.skydns_mem}}
+          image: {{.Values.skydns_image}}
+          # command: "/skydns"
+          args:
+            - -machines={{.Values.skydns_machines}}
+            - -addr={{.Values.skydns_address}}:{{.Values.skydns_port}}
+            - -ns-rotate=false
+            - -domain={{.Values.dns_domain}}.
+          ports:
+            - containerPort: {{.Values.skydns_port}}
+              name: dns
+              protocol: UDP
+            - containerPort: {{.Values.skydns_port}}
+              name: dns-tcp
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: {{.Values.healthz_port}}
+              scheme: HTTP
+            initialDelaySeconds: {{.Values.healthz_delay}}
+            timeoutSeconds: {{.Values.healthz_timeout}}
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: {{.Values.healthz_port}}
+              scheme: HTTP
+            initialDelaySeconds: {{.Values.readiness_delay}}
+            timeoutSeconds: {{.Values.readiness_timeout}}
+        - name: healthz
+          image: {{.Values.healthz_image}}
+          resources:
+            limits:
+              cpu: {{.Values.healthz_cpu}}
+              memory: {{.Values.healthz_mem}}
+          args:
+            - -cmd=nslookup kubernetes.default.svc.{{.Values.dns_domain}} 127.0.0.1 >/dev/null
+            - -port={{.Values.healthz_port}}
+          ports:
+            - containerPort: {{.Values.healthz_port}}
+              protocol: TCP
+      dnsPolicy: Default 
+      volumes:
+        - name: etcd-storage
+          emptyDir: {}
