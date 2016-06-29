@@ -1,0 +1,6 @@
+# Default values for kubedash.
+# This is a YAML-formatted file. 
+replicas: 1
+kubedash_image: gcr.io/google_containers/kubedash:v0.2.1
+kubedash_cpu: 50m
+kubedash_mem: 100Mi

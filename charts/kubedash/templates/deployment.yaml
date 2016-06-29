@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: {{.Chart.Name}}
+    kubernetes.io/cluster-service: "true"
+  name: {{.Chart.Name}}
+  namespace: "kube-system"
+spec:
+  replicas: {{.Values.replicas}}
+  selector:
+    name: {{.Chart.Name}}
+  template:
+    metadata:
+      labels:
+        name: {{.Chart.Name}}
+        kubernetes.io/cluster-service: "true"
+    spec:
+      containers:
+        -
+          image: {{.Values.kubedash_image}}
+          name: {{.Chart.Name}}
+          command:
+            - "/kubedash"
+          resources:
+            limits:
+              cpu: {{.Values.kubedash_cpu}}
+              memory: {{.Values.kubedash_mem}}
+          volumeMounts:
+            -
+              name: "ssl-certs"
+              mountPath: "/etc/ssl/certs"
+              readOnly: true
+      volumes:
+        -
+          name: "ssl-certs"
+          hostPath:
+            path: "/etc/ssl/certs"
