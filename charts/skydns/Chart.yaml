@@ -1,4 +1,4 @@
 name: skydns
 description: SkyDNS Helm chart for Kubernetes
 version: 0.1.0
-home: "https://github.com/samsung-cnct/kraken-services"
+home: https://github.com/samsung-cnct/kraken-services
