@@ -85,7 +85,7 @@ spec:
         cagby.io/color: FFB266
     spec:
       containers:
-        - image: gcr.io/google_containers/heapster:v0.18.2
+        - image: gcr.io/google_containers/heapster:v1.1.0
           name: heapster
           resources:
             limits:
@@ -121,7 +121,7 @@ spec:
         kubernetes.io/cluster-service: "true"
     spec:
       containers:
-        - image: gcr.io/google_containers/heapster_influxdb:v0.4
+        - image: gcr.io/google_containers/heapster_influxdb:v0.5
           name: influxdb
           resources:
             limits:
@@ -135,7 +135,7 @@ spec:
           volumeMounts:
           - name: influxdb-persistent-storage
             mountPath: /data
-        - image: gcr.io/google_containers/heapster_grafana:v2.1.1
+        - image: gcr.io/google_containers/heapster_grafana:v2.6.0-2
           name: grafana
           env:
           resources:
