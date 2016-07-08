@@ -1,4 +1,4 @@
 # Default values for uge scheduler.
 # This is a YAML-formatted file
-password: changeme
+uge_password: changeme
 dockercfg_base64: changeme

@@ -10,7 +10,7 @@ metadata:
   namespace: uge-scheduler
 type: Opaque
 data:
-  passwd: {{ .Values.password }}
+  passwd: {{ .Values.uge_password }}
 ---
 apiVersion: v1
 kind: Secret

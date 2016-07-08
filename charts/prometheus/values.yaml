@@ -13,7 +13,7 @@ prometheus_node_port: 30360
 kube_apiserver: localhost:8001
 kube_controller_manager: 127.0.0.1:10252
 kube_scheduler: 127.0.0.1:10251
-etcd: 127.0.0.1:4001
+etcd_target: 127.0.0.1:4001
 master_cadvisor: 127.0.0.1:8094
 etcd_cadvisor: 127.0.0.1:8094
 pushgateway_image: prom/pushgateway:latest
