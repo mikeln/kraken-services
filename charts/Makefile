@@ -15,7 +15,7 @@ index:
 	@helm repo index cnct-atlas http://atlas.cnct.io
 
 sync:
-	@gsutil rsync ./cnct-atlas gs://atlas.cnct.io
+	@gsutil -m cp -r ./cnct-atlas/* gs://atlas.cnct.io
 
 acl:
 	@gsutil -m acl set -R -a public-read gs://atlas.cnct.io

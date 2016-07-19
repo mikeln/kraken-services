@@ -10,7 +10,7 @@ metadata:
   namespace: uge-scheduler
 type: Opaque
 data:
-  passwd: {{ .Values.uge_password }}
+  passwd: {{ .Values.scheduler_password }}
 ---
 apiVersion: v1
 kind: Secret
@@ -31,7 +31,8 @@ metadata:
 spec:
   replicas: 1
   selector:
-    name: kube-uge
+    matchLabels:
+      name: kube-uge
   template:
     metadata:
       labels:

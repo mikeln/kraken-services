@@ -14,6 +14,11 @@ precheck:
 		exit 1; \
 	fi
 
+	@if [ -z ${GOBIN} ]; then \
+		echo "Make sure your GOBIN is set"; \
+		exit 1; \
+	fi
+
 	@if [ ! -d ${GOPATH}/src/k8s.io/helm ]; then \
 		mkdir -p ${GOPATH}/src/k8s.io/helm; \
 		git clone ${HELM_REPO} ${GOPATH}/src/k8s.io/helm; \
@@ -23,8 +28,8 @@ precheck:
 
 .PHONY: build-helm
 build-helm:
-	cd ${GOPATH}//src/k8s.io/helm; GOOS=linux GOARCH=amd64 make bootstrap build
-	cp ${GOPATH}/src/k8s.io/helm/bin/helm .
+	cd ${GOPATH}/src/k8s.io/helm; make bootstrap build-cross
+	cp ${GOBIN}/linux_amd64/helm .
 	cd ${GOPATH}/src/k8s.io/helm; make docker-build
 	docker tag gcr.io/kubernetes-helm/tiller:canary ${DOCKER_REGISTRY}/tiller:$$(cd ${GOPATH}/src/k8s.io/helm; git rev-parse HEAD)
 	docker tag gcr.io/kubernetes-helm/tiller:canary ${DOCKER_REGISTRY}/tiller:latest
