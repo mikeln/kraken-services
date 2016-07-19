@@ -10,8 +10,9 @@ metadata:
 spec:
   replicas: 1
   selector:
-    k8s-app: heapster
-    version: {{.Values.heapster_version}}
+    matchLabels:
+      k8s-app: heapster
+      version: {{.Values.heapster_version}}
   template:
     metadata:
       labels:

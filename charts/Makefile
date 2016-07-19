@@ -3,7 +3,7 @@ CHARTS := $(shell ls -dm */ | sed 's/,//g' | sed 's/cnct-atlas//g' | sed 's/\///
 .PHONY: clean all package makepath copy index sync acl
 all: package makepath copy index sync acl
 
-package: ; $(foreach chart,$(CHARTS),(helm package $(chart)) &&) :
+package: ; $(foreach chart,$(CHARTS),(helm package $(chart) --save=false) &&) :
 
 makepath:
 	@mkdir -p cnct-atlas

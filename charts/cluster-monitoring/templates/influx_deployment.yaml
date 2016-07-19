@@ -10,8 +10,9 @@ metadata:
 spec:
   replicas: {{.Values.replicas}}
   selector:
-    k8s-app: influxGrafana
-    version: {{.Values.grafana_version}}
+    matchLabels:
+      k8s-app: influxGrafana
+      version: {{.Values.grafana_version}}
   template:
     metadata:
       labels:

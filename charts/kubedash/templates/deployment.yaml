@@ -2,14 +2,15 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    name: {{.Chart.Name}}
+    name: kubedash
     kubernetes.io/cluster-service: "true"
-  name: {{.Chart.Name}}
+  name: kubedash
   namespace: "kube-system"
 spec:
   replicas: {{.Values.replicas}}
   selector:
-    name: {{.Chart.Name}}
+    matchLabels:
+      name: kubedash
   template:
     metadata:
       labels:
@@ -19,7 +20,7 @@ spec:
       containers:
         -
           image: {{.Values.kubedash_image}}
-          name: {{.Chart.Name}}
+          name: kubedash
           command:
             - "/kubedash"
           resources:
