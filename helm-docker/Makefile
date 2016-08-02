@@ -2,7 +2,7 @@ DOCKER_REGISTRY := quay.io/samsung_cnct
 HELM_REPO       := git@github.com:kubernetes/helm.git
 
 .PHONY: all
-all: build push 
+all: build push
 
 .PHONY: build
 build: precheck build-helm build-helm-docker
@@ -29,7 +29,7 @@ precheck:
 .PHONY: build-helm
 build-helm:
 	cd ${GOPATH}/src/k8s.io/helm; make bootstrap build-cross
-	cp ${GOBIN}/linux_amd64/helm .
+	cp ${GOPATH}/src/k8s.io/helm/_dist/linux-amd64/helm .
 	cd ${GOPATH}/src/k8s.io/helm; make docker-build
 	docker tag gcr.io/kubernetes-helm/tiller:canary ${DOCKER_REGISTRY}/tiller:$$(cd ${GOPATH}/src/k8s.io/helm; git rev-parse HEAD)
 	docker tag gcr.io/kubernetes-helm/tiller:canary ${DOCKER_REGISTRY}/tiller:latest

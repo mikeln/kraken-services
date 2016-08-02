@@ -1,18 +1,17 @@
 FROM alpine:3.3
 
-ENV KUBERNETES_VERSION=v1.2.5
+ENV KUBERNETES_VERSION=v1.3.2
 
 # socat
 RUN apk update \
     && apk add socat \
     && apk add ca-certificates \
-    && update-ca-certificates 
+    && update-ca-certificates
 
 # kubectl
-RUN wget https://github.com/GoogleCloudPlatform/kubernetes/releases/download/${KUBERNETES_VERSION}/kubernetes.tar.gz \
-    && tar -xvzf kubernetes.tar.gz \
-    && cp kubernetes/platforms/linux/amd64/kubectl /usr/bin \
-    && rm kubernetes.tar.gz
+RUN wget https://storage.googleapis.com/kubernetes-release/release/${KUBERNETES_VERSION}/bin/linux/amd64/kubectl \
+    && mv kubectl /usr/bin \
+    && chmod +x /usr/bin/kubectl
 
 COPY helm /
 
