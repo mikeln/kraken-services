@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: uge-scheduler
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: uge-rest
+  namespace: uge-scheduler
+type: Opaque
+data:
+  passwd: {{ .Values.scheduler_password }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gcr-registry
+  namespace: uge-scheduler
+type: kubernetes.io/dockercfg
+data:
+  .dockercfg: {{ .Values.dockercfg_base64 }}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kube-uge
+  namespace: uge-scheduler
+  labels:
+    kubernetes.io/cluster-service: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kube-uge
+  template:
+    metadata:
+      labels:
+        name: kube-uge
+        kubernetes.io/cluster-service: "true"
+    spec:
+      imagePullSecrets:
+      - name: gcr-registry
+      containers:
+      - name: uge
+        image: gcr.io/coho-1159/uge
+        ports:
+        - containerPort: 8182
+          name: uge-qmaster
+        volumeMounts:
+        - name: uge-rest
+          mountPath: /etc/uge-rest
+          readOnly: true
+      - name: kube2uge
+        image: gcr.io/coho-1159/kube2uge
+        command:
+        - /kube2uge
+        - -v=2
+        volumeMounts:
+        - name: uge-rest
+          mountPath: /etc/uge-rest
+          readOnly: true
+      volumes:
+      - name: uge-rest
+        secret:
+           secretName: uge-rest

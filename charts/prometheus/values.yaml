@@ -1,0 +1,23 @@
+# Default values for prometheus.
+# This is a YAML-formatted file. 
+namespace: default
+replicas: 1
+color: E5CCFF
+dburl: "sqlite3:/promdash/file.sqlite3"
+promdash_image: "quay.io/samsung_cnct/promdash:latest"
+promdash_port: 3000
+promdash_node_port: 30361
+prometheus_image: "quay.io/samsung_cnct/promdash:latest"
+prometheus_port: 9090
+prometheus_node_port: 30360
+kube_apiserver: "localhost:8001"
+kube_controller_manager: "127.0.0.1:10252"
+kube_scheduler: "127.0.0.1:10251"
+etcd_target: "127.0.0.1:4001"
+master_cadvisor: "127.0.0.1:8094"
+etcd_cadvisor: "127.0.0.1:8094"
+pushgateway_image: "prom/pushgateway:latest"
+pushgateway_port: 9091
+pushgateway_node_port: 30362
+sidecar_image: "lachlanevenson/k8s-kubectl"
+node_selector: "node-001"

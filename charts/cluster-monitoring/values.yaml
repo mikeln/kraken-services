@@ -1,0 +1,27 @@
+# Default values for cluster-monitoring.
+# This is a YAML-formatted file.
+heapster_version: v10
+replicas: 1
+heapster_color: FFB266
+heapster_image: gcr.io/google_containers/heapster:v0.18.2
+heapster_cpu: 100m
+heapster_mem: 300Mi
+heapster_stats_res: 30s
+heapster_sink_freq: 1m
+heapster_port: 8082
+heapster_nodeport: 30310
+grafana_version: v2
+grafana_color: 6666FF
+grafana_image: gcr.io/google_containers/heapster_grafana:v2.1.1
+grafana_cpu: 100m
+grafana_mem: 100Mi
+grafana_port: 3000
+grafana_nodeport: 30320
+influx_port: 8086
+influx_port_secondary: 8083
+influx_nodeport: 30322
+influx_nodeport_secondary: 30321 
+influx_image: gcr.io/google_containers/heapster_influxdb:v0.4
+influx_cpu: 100m
+influx_mem: 200Mi
+node_selector: node-001

@@ -1,0 +1,71 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: monitoring-influxdb-grafana-v2
+  namespace: kube-system
+  labels:
+    k8s-app: influxGrafana
+    version: {{.Values.grafana_version}}
+    kubernetes.io/cluster-service: "true"
+spec:
+  replicas: {{.Values.replicas}}
+  selector:
+    matchLabels:
+      k8s-app: influxGrafana
+      version: {{.Values.grafana_version}}
+  template:
+    metadata:
+      labels:
+        k8s-app: influxGrafana
+        version: {{.Values.grafana_version}}
+        cagby.io/color: {{.Values.grafana_color}}
+        kubernetes.io/cluster-service: "true"
+    spec:
+      containers:
+        - image: {{.Values.influx_image}}
+          name: influxdb
+          resources:
+            limits:
+              cpu: {{.Values.influx_cpu}}
+              memory: {{.Values.influx_mem}}
+          ports:
+            - containerPort: {{.Values.influx_port_secondary}}
+              hostPort: {{.Values.influx_port_secondary}}
+            - containerPort: {{.Values.influx_port}}
+              hostPort: {{.Values.influx_port}}
+          volumeMounts:
+          - name: influxdb-persistent-storage
+            mountPath: /data
+        - image: {{.Values.grafana_image}}
+          name: grafana
+          env:
+          resources:
+            limits:
+              cpu: {{.Values.grafana_cpu}}
+              memory: {{.Values.grafana_mem}}
+          env:
+            # This variable is required to setup templates in Grafana.
+            - name: INFLUXDB_SERVICE_URL
+              value: http://monitoring-influxdb:{{.Values.influx_port}}
+              # The following env variables are required to make Grafana accessible via
+              # the kubernetes api-server proxy. On production clusters, we recommend
+              # removing these env variables, setup auth for grafana, and expose the grafana
+              # service using a LoadBalancer or a public IP.
+            - name: GF_AUTH_BASIC_ENABLED
+              value: "false"
+            - name: GF_AUTH_ANONYMOUS_ENABLED
+              value: "true"
+            - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+              value: Admin
+            - name: GF_SERVER_ROOT_URL
+              value: /api/v1/proxy/namespaces/kube-system/services/monitoring-grafana/
+          volumeMounts:
+          - name: grafana-persistent-storage
+            mountPath: /var
+      nodeSelector:
+        kraken-node: {{.Values.node_selector}}
+      volumes:
+      - name: influxdb-persistent-storage
+        emptyDir: {}
+      - name: grafana-persistent-storage
+        emptyDir: {}

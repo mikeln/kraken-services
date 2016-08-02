@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: monitoring-influxdb
+  namespace: kube-system
+  labels:
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "InfluxDB"
+spec:
+  ports:
+  - name: http
+    port: {{.Values.influx_port_secondary}}
+    targetPort: {{.Values.influx_port_secondary}}
+    nodePort: {{.Values.influx_nodeport_secondary}}
+    protocol: TCP
+  - name: api
+    port: {{.Values.influx_port}}
+    targetPort: {{.Values.influx_port}}
+    nodePort: {{.Values.influx_nodeport}}
+    protocol: TCP
+  selector:
+    k8s-app: influxGrafana
+  type: NodePort

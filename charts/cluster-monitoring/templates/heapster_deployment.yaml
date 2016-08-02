@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: heapster-{{.Values.heapster_version}}
+  namespace: kube-system
+  labels:
+    k8s-app: heapster
+    kubernetes.io/cluster-service: "true"
+    version: {{.Values.heapster_version}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: heapster
+      version: {{.Values.heapster_version}}
+  template:
+    metadata:
+      labels:
+        k8s-app: heapster
+        version: {{.Values.heapster_version}}
+        kubernetes.io/cluster-service: "true"
+        cagby.io/color: {{.Values.heapster_color}}
+    spec:
+      containers:
+        - image: {{.Values.heapster_image}}
+          name: heapster
+          resources:
+            limits:
+              cpu: {{.Values.heapster_cpu}}
+              memory: {{.Values.heapster_mem}}
+          command:
+            - /heapster
+            - --source=kubernetes:''
+            - --sink=influxdb:http://monitoring-influxdb:{{.Values.influx_port}}
+            - --stats_resolution={{.Values.heapster_stats_res}}
+            - --sink_frequency={{.Values.heapster_sink_freq}}

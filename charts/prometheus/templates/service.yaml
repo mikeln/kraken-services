@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: prometheus
+  name: prometheus
+  namespace: {{.Values.namespace}}
+spec:
+  ports:
+    - name: prometheus
+      nodePort: {{.Values.prometheus_node_port}}
+      port: {{.Values.prometheus_port}}
+      protocol: TCP
+      targetPort: {{.Values.prometheus_port}}
+    - name: promdash
+      nodePort: {{.Values.promdash_node_port}}
+      port: {{.Values.promdash_port}}
+      protocol: TCP
+      targetPort: {{.Values.promdash_port}}
+    - name: pushgateway
+      port: {{.Values.pushgateway_port}}
+      protocol: TCP
+      targetPort: {{.Values.pushgateway_port}}
+      nodePort: {{.Values.pushgateway_node_port}}
+  selector:
+    name: prometheus
+  sessionAffinity: None
+  type: NodePort

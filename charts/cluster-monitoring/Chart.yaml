@@ -1,0 +1,4 @@
+name: cluster-monitoring
+description: A Helm chart for Kraken cluster monitoring setup
+version: 0.1.0
+home: https://github.com/samsung-cnct/kraken-services

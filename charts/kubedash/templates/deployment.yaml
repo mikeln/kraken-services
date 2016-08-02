@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: kubedash
+    kubernetes.io/cluster-service: "true"
+  name: kubedash
+  namespace: "kube-system"
+spec:
+  replicas: {{.Values.replicas}}
+  selector:
+    matchLabels:
+      name: kubedash
+  template:
+    metadata:
+      labels:
+        name: {{.Chart.Name}}
+        kubernetes.io/cluster-service: "true"
+    spec:
+      containers:
+        -
+          image: {{.Values.kubedash_image}}
+          name: kubedash
+          command:
+            - "/kubedash"
+          resources:
+            limits:
+              cpu: {{.Values.kubedash_cpu}}
+              memory: {{.Values.kubedash_mem}}
+          volumeMounts:
+            -
+              name: "ssl-certs"
+              mountPath: "/etc/ssl/certs"
+              readOnly: true
+      volumes:
+        -
+          name: "ssl-certs"
+          hostPath:
+            path: "/etc/ssl/certs"

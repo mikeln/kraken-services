@@ -1,0 +1,86 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: prometheus
+  name: prometheus
+  namespace: {{.Values.namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: prometheus
+  template:
+    metadata:
+      labels:
+        cagby.io/color: {{.Values.color}}
+        name: prometheus
+    spec:
+      containers:
+        - name: promdash
+          env:
+            - name: DATABASE_URL
+              value: {{.Values.dburl}}
+          image: {{.Values.promdash_image}}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{.Values.promdash_port}}
+              hostPort: {{.Values.promdash_port}}
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /promdash
+              name: data
+        - name: prometheus
+          args:
+            - -t
+            - PROMETHEUS,KUBE_APISERVER,KUBE_CONTROLLER,KUBE_SCHEDULER,KUBE_ETCD,MASTER_CADVISOR,ETCD_CADVISOR,PUSHGATEWAY
+            - -d
+            - /var/prometheus
+            - -K
+          env:
+            - name: PROMETHEUS_TARGET_ADDRESS
+              value: localhost:{{.Values.prometheus_port}}
+            # XXX: don't expect this to gather sane data once there are N apiserver's behind the master
+            - name: KUBERNETES_RO_SERVICE_HOST
+              value: localhost
+            - name: KUBERNETES_RO_SERVICE_PORT
+              value: "8001"
+            - name: KUBE_APISERVER_TARGET_ADDRESS
+              value: {{.Values.kube_apiserver}}
+            - name: KUBE_CONTROLLER_TARGET_ADDRESS
+              value: {{.Values.kube_controller_manager}}
+            - name: KUBE_SCHEDULER_TARGET_ADDRESS
+              value: {{.Values.kube_scheduler_manager}}
+            - name: KUBE_ETCD_TARGET_ADDRESS
+              value: {{.Values.etcd_target}}
+            - name: MASTER_CADVISOR_TARGET_ADDRESS
+              value: {{.Values.master_cadvisor}}
+            - name: ETCD_CADVISOR_TARGET_ADDRESS
+              value: {{.Values.etcd_cadvisor}}
+            - name: PUSHGATEWAY_TARGET_ADDRESS
+              value: localhost:{{.Values.pushgateway_port}}
+          image: {{.Values.prometheus_image}}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{.Values.prometheus_port}}
+              hostPort: {{.Values.prometheus_port}}
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/prometheus/
+              name: data
+        - name:  pushgateway
+          image: {{.Values.pushgateway_image}}
+          ports:
+            - containerPort: {{.Values.pushgateway_port}}
+              hostPort: {{.Values.pushgateway_port}}
+              protocol: TCP
+        - name: kubectl
+          image: {{.Values.sidecar_image}}
+          args: [ "proxy", "-p",  "8001" ]
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        kraken-node: {{.Values.node_selector}}
+      restartPolicy: Always
+      volumes:
+      - name: data
+        emptyDir: {}
