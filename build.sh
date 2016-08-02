@@ -7,12 +7,12 @@ set -u
 DOCKER_REPO=${DOCKER_REPO:-"quay.io/samsung_cnct"}
 DOCKER_TAG=${DOCKER_TAG:-"latest"}
 DOCKER_PUSH=${DOCKER_PUSH:-"false"}
-PRUNE_PATHS=${PRUNE_PATHS:-"helm-docker charts"}
+IGNORE_PATHS=${IGNORE_PATHS:-"helm-docker charts"}
 
 # utilities
 doit=""
 print_usage_and_die() {
-  echo "usage: $0 [--repo (default: quay.io/samsung_cnct)] [--tag (default: latest)] [--prune (default: 'helm-docker charts')] [--push] dir"
+  echo "usage: $0 [--repo (default: quay.io/samsung_cnct)] [--tag (default: latest)] [--ignore (default: 'helm-docker charts')] [--push] dir"
   exit 1
 }
 
@@ -35,8 +35,8 @@ while [[ $# > 1 ]]; do
     -n|--dryrun)
       doit="echo"
       ;;
-    -p|--prune)
-      PRUNE_PATHS="$1"
+    -i|--ignore)
+      IGNORE_PATHS="$1"
       ;;
     -h|*)
       print_usage_and_die
@@ -52,7 +52,7 @@ dockerfiles_dir=$1
 
 # build ignore dirs string
 ignore_paths=""
-for folder in ${PRUNE_PATHS}; do
+for folder in ${IGNORE_PATHS}; do
   ignore_paths="${ignore_paths}-not -path \"*/${folder}/*\" "
 done
 
