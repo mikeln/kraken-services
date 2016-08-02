@@ -12,7 +12,7 @@ PRUNE_PATHS=${PRUNE_PATHS:-"helm-docker charts"}
 # utilities
 doit=""
 print_usage_and_die() {
-  echo "usage: $0 [--repo (default: quay.io/samsung_cnct)] [--tag (default: latest)] [--push] dir [--prune (default: 'helm-docker charts')]"
+  echo "usage: $0 [--repo (default: quay.io/samsung_cnct)] [--tag (default: latest)] [--prune (default: 'helm-docker charts')] [--push] dir"
   exit 1
 }
 
@@ -56,8 +56,11 @@ for folder in ${PRUNE_PATHS}; do
   ignore_paths="${ignore_paths}-not -path \"*/${folder}/*\" "
 done
 
+# build command string
+command_string="find $dockerfiles_dir -type f -name Dockerfile $ignore_paths| sed -e 's|^./||'"
+
 # locate dockerfiles
-dockerfiles=$(find $dockerfiles_dir -type f -name Dockerfile ${ignore_paths}| sed -e 's|^./||')
+dockerfiles=$(eval $command_string)
 
 # pre-pull FROM images
 for image in $(cat $dockerfiles | grep "^FROM" | sed -e 's/^FROM //' | grep -v '^scratch$' | sort | uniq); do
