@@ -11,7 +11,7 @@ spec:
         app: podpincher
     spec:
       containers:
-      - image: quay.io/samsung_cnct/podpincher:latest
+      - image: quay.io/samsung_cnct/podpincher:color01
         imagePullPolicy: Always
         name: podpincher
         env:
