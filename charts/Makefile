@@ -12,7 +12,7 @@ copy:
 	@mv *.tgz cnct-atlas/
 
 index:
-	@helm repo index cnct-atlas http://atlas.cnct.io
+	@helm repo index ./cnct-atlas --url http://atlas.cnct.io
 
 sync:
 	@gsutil -m cp -r ./cnct-atlas/* gs://atlas.cnct.io
