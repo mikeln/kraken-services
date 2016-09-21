@@ -1,0 +1,35 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: podpincher
+  name: podpincher
+spec:
+  replicas: {{.Values.replicas}}
+  selector:
+    matchLabels:
+      app: podpincher
+  template:
+    metadata:
+      labels:
+        cagby.io/color: {{.Values.color}}
+        app: podpincher
+    spec:
+      containers:
+      - image: {{.Values.image}}
+        imagePullPolicy: Always
+        name: podpincher
+        env:
+        - name: KUBERNETES_API_VER
+          value: {{.Values.apiver}}
+        - name: KUBERNETES_API_URL
+          value: http://127.0.0.1:8001/api/
+        ports:
+        - containerPort: 4567
+          hostPort: 4567
+          protocol: TCP
+      - image: "lachlanevenson/k8s-kubectl"
+        name: kubectl
+        args: [ "proxy", "-p",  "8001" ]
+
