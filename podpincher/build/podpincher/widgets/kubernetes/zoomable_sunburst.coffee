@@ -107,16 +107,18 @@ class window.ZoomableSunburst
         else
             @node = data
 
+#        console.log("update(data) node: #{@node}",@node)
 
         @path = @svg.selectAll("path")
             .data(@partition.nodes(data), (d) ->
-                d.name + d.host)
+                d.name + d.host + d.color)
 
         @path.enter()
             .append("path")
             .attr("d", @arc)
 #           .attr("stroke", "white")
             .attr("fill", (d) ->
+#                console.log("update(d) node: #{d}",d)
                 return d.color )
             .on("click", @click)
             .on("mouseover", @mouseover)

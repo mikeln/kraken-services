@@ -19,6 +19,7 @@ class EventProcessor
     @disabled_node_color = Paleta::Color.new(:hex, "444444")
     @ns_palette = Paleta::Palette.generate(:type => :random, :size => MAX_NS_COLORS)
     @pod_palettes = Hash.new
+    @pod_increment = 0
   end
 
   def getLabels(metadata)
@@ -36,15 +37,14 @@ class EventProcessor
   end
 
   def get_pod_color_key(pod)
-   # change this to index on each pod name...vs just the friendly type
-   # labels = getLabels(pod[:metadata])
-   # key = ['kubernetes.io/name', 'k8s-app', 'app', 'name'].find { |k| not labels[k].nil? }
-   # key.nil? ? pod[:metadata]['name'] : labels[key]
+    # change this to index on each pod name...vs just the friendly type..this way we can get a different color shade for each pod.
     key = pod[:metadata]['name']
   end
 
   def get_pod_color(pod, color_key)
 	  # check for override in resources...only if color isn't already set
+	  # TODO: need to change colors if status change is detected...so keep some of this optimization
+	  # TODO: but re-eveal to see if we need to change the value.
     color = @colors[color_key]
     if color.nil?
       labels = getLabels(pod[:metadata])
@@ -171,11 +171,23 @@ class EventProcessor
           # The shades palette tends be increasing values...jump around for better color dist
           # NOTE: This has the same issue with the list of Pods chaning position, but since it is in the
           # NOTE: same palette, we'll accept the cases where we end up with the same or similar colros.
-          pod_palette_i = (3*pod_i) % MAX_POD_NS_COLORS
+	  # NOTE: have to resort to separate counter as pods can come an go...then we end up with the
+	  # NOTE: same color (if a stable kill/retart scenario)
+          @pod_increment = @pod_increment + 1
+          #pod_palette_i = (3*pod_i) % MAX_POD_NS_COLORS
+          pod_palette_i = @pod_increment % MAX_POD_NS_COLORS
 	  color = "##{current_pod_palette[pod_palette_i].hex}"
         end
 	#puts "-- #{pod_i}: #{pod_palette_i} c: #{color} - #{pod[:metadata]['name']}"
-
+	#
+	#  get the friendly name here...in case we need to modify it for termination markings
+	nice_name = get_friendly_pod_name(pod)
+	#
+	#  SO A pod is marked as terminating with the deletionTimestamp...let;s maakr those pods clearly
+	if pod[:metadata][:deletionTimestamp]
+		color = "#ff0f0f"
+		nice_name = "Terminating: #{nice_name}"
+	end
         # setup color for this pod type
         # color_key = set_pod_color(pod, color)
 	#
@@ -186,7 +198,7 @@ class EventProcessor
         pods_by_node[pod[:spec]['nodeName']].push(
           {
             name: pod[:metadata]['name'],
-            friendly_name: get_friendly_pod_name(pod),
+            friendly_name: nice_name,
             host: pod[:spec]['nodeName'],
             color: @colors[color_key]
           }

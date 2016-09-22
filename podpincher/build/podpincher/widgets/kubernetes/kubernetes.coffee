@@ -15,6 +15,7 @@ class Dashing.Kubernetes extends Dashing.Widget
 
     onData: (data) ->
         console.log("onData: cluster chart: #{@cluster_chart}", @cluster_chart) if @cluster_chart
-        @cluster_chart.drawChart data if @cluster_chart
+        if data
+           @cluster_chart.drawChart data if @cluster_chart
 
 
