@@ -1,0 +1,6 @@
+# Default values for kubedash.
+# This is a YAML-formatted file. 
+replicas: 1
+color: FF33FF
+image: quay.io/samsung_cnct/podpincher:latest
+apiver: v1
